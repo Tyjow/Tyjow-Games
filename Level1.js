@@ -18,11 +18,6 @@ EnemyMob = function(index,game,x,y) {
 }
 
 addCoin = function(game,x,y){
-    
-    var coins;
-
-    coins = game.add.group();
-    coins.enableBody = true;
 
     coin = coins.create(x,y,'coin');
     coin.anchor.setTo(0.5,0.5);
@@ -39,6 +34,9 @@ Game.Level1 = function(game) {};
 var map;
 var layer;
 
+var score = 0;
+var getCoin;
+var coins;
 var someCoin;
 var player;
 var controls = {};
@@ -85,6 +83,9 @@ Game.Level1.prototype = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.Z),
         };
 
+        coins = game.add.group();
+        coins.enableBody = true;
+
         /*coin = this.add.sprite(250,480,'coin');
         coin.anchor.setTo(0.5,0.5);
         this.physics.arcade.enable(coin);
@@ -121,11 +122,16 @@ Game.Level1.prototype = {
 	        coin.body.bounce.y = 0.2 + Math.random() * 0.2;
 	    }*/
 
-        someCoin = new addCoin(game,250,410);
-        //addCoin(game,300,410);
-        //addCoin(game,350,410);
+        someCoin = new addCoin(game,250,420);
+        addCoin(game,300,420);
+        addCoin(game,350,420);
+        addCoin(game,400,420);
+        addCoin(game,615,510);
+        addCoin(game,665,510);
 
         enemy1 = new EnemyMob(0,game,player.x+450,player.y-280);
+
+        getCoin = game.add.text(30, 50, "Pièce : 0", { font: "25px Arial", fill: "#000" });
         
 	},
 
@@ -167,7 +173,7 @@ Game.Level1.prototype = {
 
         }
 
-        this.physics.arcade.overlap(player, coin, collectCoin, null, this);
+        this.physics.arcade.overlap(player, coins, collectCoin, null, this);
 
 
 
@@ -175,7 +181,12 @@ Game.Level1.prototype = {
 
 	resetPlayer:function(){
 		player.reset(100,560);
-		coin.revive();
+        for (var i = 0; i < coins.children.length; i++)
+        //for (var i in coins.children)
+		  coins.children[i].revive();
+        score = 0;
+        getCoin.text = "Pièce : " + score;
+            
 
 	},
 
@@ -186,9 +197,11 @@ Game.Level1.prototype = {
 
 }
 
-function collectCoin (player, coin) {
+function collectCoin (player, coins) {
 
-    coin.kill();
+    coins.kill();
+    score ++;
+    getCoin.text = "Pièces : " + score;
 }
 
 function checkOverlap(spriteA, spriteB){
