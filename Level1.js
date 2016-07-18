@@ -128,10 +128,19 @@ Game.Level1.prototype = {
         addCoin(game,400,420);
         addCoin(game,615,510);
         addCoin(game,665,510);
+        addCoin(game,935,370);
+        addCoin(game,985,370);
 
         enemy1 = new EnemyMob(0,game,player.x+450,player.y-280);
 
-        getCoin = game.add.text(30, 50, "Pièce : 0", { font: "25px Arial", fill: "#000" });
+        //var piece = this.add.sprite('coin'); piece + 
+
+        getCoin = game.add.text(30, 30, "Pièce : 0", { font: "25px Arial", fill: "rgba(0, 0, 77, 0.8)" });
+        getCoin.fontWeight = 'bold';
+        getCoin.stroke = "#9494b8";
+        getCoin.strokeThickness = 8;
+        getCoin.setShadow(2, 2, "#66ee99", 2, false, true);
+
         (getCoin).fixedToCamera = true;
         
 	},
