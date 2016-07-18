@@ -132,6 +132,7 @@ Game.Level1.prototype = {
         enemy1 = new EnemyMob(0,game,player.x+450,player.y-280);
 
         getCoin = game.add.text(30, 50, "Pièce : 0", { font: "25px Arial", fill: "#000" });
+        (getCoin).fixedToCamera = true;
         
 	},
 
