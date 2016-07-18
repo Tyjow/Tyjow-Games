@@ -19,6 +19,8 @@ Game.Preloader.prototype = {
         this.load.tilemap('map', 'assets/map01.csv');
         
         this.load.image('tileset', 'assets/tileset.png');
+
+        this.load.image('purple_ball', 'assets/purple_ball.png');
         
         this.load.spritesheet('player', 'assets/player.png',32,48);
 

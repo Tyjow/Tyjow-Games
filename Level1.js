@@ -43,6 +43,10 @@ var controls = {};
 var playerSpeed = 150;
 var jumpTimer = 0;
 
+var fireRate = 100;
+var shootTime = 0;
+var purple_ball;
+
 Game.Level1.prototype = {
 	create:function(game){
 
@@ -81,6 +85,7 @@ Game.Level1.prototype = {
             right: this.input.keyboard.addKey(Phaser.Keyboard.D),
             left: this.input.keyboard.addKey(Phaser.Keyboard.Q),
             up: this.input.keyboard.addKey(Phaser.Keyboard.Z),
+            shoot: this.input.keyboard.addKey(Phaser.Keyboard.UP),
         };
 
         coins = game.add.group();
@@ -142,12 +147,27 @@ Game.Level1.prototype = {
         getCoin.setShadow(2, 2, "#66ee99", 2, false, true);
 
         (getCoin).fixedToCamera = true;
+
+        purple_ball = game.add.group();
+        purple_ball.enableBody = true;
+        purple_ball.physicsBodyType = Phaser.Physics.ARCADE;
+        purple_ball.createMultiple(5,'purple_ball');
+
+        purple_ball.setAll('anchor.x', 0.5);
+        purple_ball.setAll('anchor.y', 0.5);
+
+        purple_ball.setAll('scale.x', 0.5);
+        purple_ball.setAll('scale.y', 0.5);
+
+        purple_ball.setAll('outOfBoundsKill', true);
+        purple_ball.setAll('checkWorldBounds', true);
         
 	},
 
 	update:function(){
         
         this.physics.arcade.collide(player,layer);
+        this.physics.arcade.collide(player,enemy1.mob,this.reset);
 
         player.body.velocity.x = 0;
         
@@ -178,9 +198,17 @@ Game.Level1.prototype = {
             player.frame = 5;
         }
 
-        if(checkOverlap(player,enemy1.mob)) {
+        /*if(checkOverlap(player,enemy1.mob)) {
         	this.resetPlayer();
 
+        }*/
+
+        if(controls.shoot.isDown) {
+        	this.shootBall();
+        }
+
+        if(checkOverlap(purple_ball, enemy1.mob)) {
+        	enemy1.mob.kill();
         }
 
         this.physics.arcade.overlap(player, coins, collectCoin, null, this);
@@ -204,6 +232,20 @@ Game.Level1.prototype = {
 		map.putTile(-1,layer.getTileX(player.x), layer.getTileY(player.y));
 	}*/
 
+	shootBall:function(){
+		if(this.time.now > shootTime){
+			shootTime = this.time.now + fireRate; 
+			bally = purple_ball.getFirstExists(false);
+			if(bally){
+				bally.reset(player.x, player.y);
+
+				bally.body.velocity.x = 600;
+				bally.body.allowGravity = false;
+
+				//shootTime = this.time.now + 450;
+			}
+		}
+	}
 
 }
 
