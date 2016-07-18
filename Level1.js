@@ -122,7 +122,8 @@ Game.Level1.prototype = {
 	    }*/
 
         someCoin = new addCoin(game,250,410);
-        someCoin = new addCoin(game,300,410);
+        //addCoin(game,300,410);
+        //addCoin(game,350,410);
 
         enemy1 = new EnemyMob(0,game,player.x+450,player.y-280);
         
@@ -166,7 +167,7 @@ Game.Level1.prototype = {
 
         }
 
-        this.physics.arcade.overlap(player, someCoin, collectCoin, null, this);
+        this.physics.arcade.overlap(player, coin, collectCoin, null, this);
 
 
 
@@ -187,7 +188,6 @@ Game.Level1.prototype = {
 
 function collectCoin (player, coin) {
 
-    // Removes the coin from the screen
     coin.kill();
 }
 
