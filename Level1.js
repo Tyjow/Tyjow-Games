@@ -17,6 +17,21 @@ EnemyMob = function(index,game,x,y) {
 	}, 2000,'Linear',true,0,100,true);
 }
 
+addCoin = function(game,x,y){
+    
+    var coins;
+
+    coins = game.add.group();
+    coins.enableBody = true;
+
+    coin = coins.create(x,y,'coin');
+    coin.anchor.setTo(0.5,0.5);
+    coin.body.allowGravity = false;
+    coin.animations.add('spin',[0, 1, 2, 3, 4, 5], 10, true);
+    coin.animations.play('spin');
+
+}
+
 var enemy1;
 
 Game.Level1 = function(game) {};
@@ -24,7 +39,7 @@ Game.Level1 = function(game) {};
 var map;
 var layer;
 
-var coins;
+var someCoin;
 var player;
 var controls = {};
 var playerSpeed = 150;
@@ -74,14 +89,21 @@ Game.Level1.prototype = {
         coin.anchor.setTo(0.5,0.5);
         this.physics.arcade.enable(coin);
         coin.body.collideWorldBounds = true;
-		coin.body.allowGravity = false;*/
+		coin.body.allowGravity = false;
 
         coins = game.add.group();
 	    coins.enableBody = true;
 
-	    coin = coins.create(250,480,'coin');
+	    coin = coins.create(250,410,'coin');
 	    coin.anchor.setTo(0.5,0.5);
 	    coin.body.allowGravity = false;
+
+        if (coin == coin) {
+
+            coins.create(280,410,'coin');
+            coin.anchor.setTo(0.5,0.5);
+            coin.body.allowGravity = false;
+        }
 
 	    coin.animations.add('spin',[0, 1, 2, 3, 4, 5], 10, true);
 	    coin.animations.play('spin');
@@ -98,6 +120,9 @@ Game.Level1.prototype = {
 	        //  This just gives each coin a slightly random bounce value
 	        coin.body.bounce.y = 0.2 + Math.random() * 0.2;
 	    }*/
+
+        someCoin = new addCoin(game,250,410);
+        someCoin = new addCoin(game,300,410);
 
         enemy1 = new EnemyMob(0,game,player.x+450,player.y-280);
         
@@ -141,7 +166,7 @@ Game.Level1.prototype = {
 
         }
 
-        this.physics.arcade.overlap(player, coins, collectCoin, null, this);
+        this.physics.arcade.overlap(player, someCoin, collectCoin, null, this);
 
 
 
