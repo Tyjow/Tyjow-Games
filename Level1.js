@@ -270,7 +270,7 @@ Game.Level1.prototype = {
 	shootBall:function(){
 
 		if (shootTime < this.time.now) {
-		    shootTime = this.time.now + 600;
+		    shootTime = this.time.now + 900;
 		    var bullet = purple_ball.getFirstExists(false);
 
 		    if (facing == 'right') {
@@ -293,15 +293,15 @@ Game.Level1.prototype = {
 		    bullet.body.allowGravity = false;
 
 		    if (facing == 'right') {
-		      bullet.body.velocity.x = 400;
+		      bullet.body.velocity.x = 600;
 		    }
 
 		    else {
-		      bullet.body.velocity.x = -400;
+		      bullet.body.velocity.x = -600;
 		    }
 
 		    if (facing == 'idle') {
-		    	bullet.body.velocity.x = 400;
+		    	bullet.body.velocity.x = 600;
 		    }
 		}
 
