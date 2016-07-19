@@ -67,7 +67,6 @@ Game.Level1.prototype = {
         map.setCollisionBetween(0,2);
 
         map.setTileIndexCallback(3, this.resetPlayer,this);
-        map.setTileLocationCallback(2, 0, 1, 1, this.resetPlayer, this);
 
         // index du tile de la piece en tile //
         //map.setTileIndexCallback(4, this.getCoin,this);
