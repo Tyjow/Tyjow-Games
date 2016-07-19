@@ -42,8 +42,9 @@ var player;
 var controls = {};
 var playerSpeed = 150;
 var jumpTimer = 0;
+var facing = 'left';
 
-var fireRate = 100;
+//var fireRate = 100;
 var shootTime = 0;
 var purple_ball;
 
@@ -73,14 +74,17 @@ Game.Level1.prototype = {
         player.anchor.setTo(0.5,0.5);
         
         //player.animations.add('idle',[0,1],1,true);
-        player.animations.add('jump',[5],1, true);
+        //player.animations.add('jump',[5],1, true);
         //player.animations.add('run',[3,4,5,6,7,8],7,true);
         player.animations.add('left', [0, 1, 2, 3], 10, true);
+        //player.animations.add('turn', [4], 20, true);
         player.animations.add('right', [5, 6, 7, 8], 10, true);
         this.physics.arcade.enable(player);
         this.camera.follow(player);
         player.body.collideWorldBounds = true;
-        
+        player.body.bounce.y = 0.2;
+        player.body.setSize(20, 32, 5, 16);
+
         controls = {
             right: this.input.keyboard.addKey(Phaser.Keyboard.D),
             left: this.input.keyboard.addKey(Phaser.Keyboard.Q),
@@ -172,31 +176,56 @@ Game.Level1.prototype = {
         player.body.velocity.x = 0;
         
         if(controls.left.isDown){
-            player.animations.play('left');
             player.scale.setTo(1,1);
             player.body.velocity.x -= playerSpeed;
+            if(facing != 'left'){
+            	player.animations.play('left');
+            	facing = 'left';
+            }
         }
         
-        if(controls.right.isDown){
-            player.animations.play('right');
+        else if(controls.right.isDown){
             player.scale.setTo(1,1);
             player.body.velocity.x += playerSpeed;
-
+            if(facing != 'right'){
+            	player.animations.play('right');
+            	facing = 'right';
+            }
         }
 
-        if(controls.up.isDown && (player.body.onFloor() || player.body.touching.down) && this.time.now > jumpTimer){
+        else{
+
+	        if (facing != 'idle'){
+	            player.animations.stop();
+	            if (facing == 'left'){
+	                player.frame = 0;
+	            }
+	            else{
+	                player.frame = 5;
+	            }
+	            facing = 'idle';
+	        }
+    	}
+
+    	if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
+	        player.body.velocity.y = -600;
+	        jumpTimer = this.time.now + 750;
+	    }
+
+        /*if(controls.up.isDown && (player.body.onFloor() || player.body.touching.down) && this.time.now > jumpTimer){
 
             player.body.velocity.y = -600;
             jumpTimer = this.time.now + 750;
             player.animations.play('jump');
             player.body.velocity.x == 0;
 
-        }
+        }*/
 
-        if(player.body.velocity.x == 0 && player.body.velocity.y == 0){
+        /*if(player.body.velocity.x == 0 && player.body.velocity.y == 0){
             player.animations.stop();
-            player.frame = 5;
-        }
+            //player.loadTexture('player', 0);
+            //player.frame = 5;
+        }*/
 
         /*if(checkOverlap(player,enemy1.mob)) {
         	this.resetPlayer();
@@ -234,7 +263,7 @@ Game.Level1.prototype = {
 
 	shootBall:function(){
 		if(this.time.now > shootTime){
-			shootTime = this.time.now + fireRate; 
+			//shootTime = this.time.now + fireRate; 
 			bally = purple_ball.getFirstExists(false);
 			if(bally){
 				bally.reset(player.x, player.y);
@@ -242,7 +271,7 @@ Game.Level1.prototype = {
 				bally.body.velocity.x = 600;
 				bally.body.allowGravity = false;
 
-				//shootTime = this.time.now + 450;
+				shootTime = this.time.now + 450;
 			}
 		}
 	}
