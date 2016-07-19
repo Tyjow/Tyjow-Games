@@ -89,7 +89,7 @@ Game.Level1.prototype = {
             right: this.input.keyboard.addKey(Phaser.Keyboard.D),
             left: this.input.keyboard.addKey(Phaser.Keyboard.Q),
             up: this.input.keyboard.addKey(Phaser.Keyboard.Z),
-            shoot: this.input.keyboard.addKey(Phaser.Keyboard.UP),
+            shoot: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
 
         coins = game.add.group();
