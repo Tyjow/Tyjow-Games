@@ -251,9 +251,9 @@ Game.Level1.prototype = {
         for (var i = 0; i < coins.children.length; i++)
         //for (var i in coins.children)
 		  coins.children[i].revive();
+
         score = 0;
         getCoin.text = "Pièce : " + score;
-            
 
 	},
 
@@ -271,7 +271,7 @@ Game.Level1.prototype = {
 				bally.body.velocity.x = 600;
 				bally.body.allowGravity = false;
 
-				shootTime = this.time.now + 450;
+				shootTime = this.time.now + 950;
 			}
 		}
 	}
