@@ -255,6 +255,8 @@ Game.Level1.prototype = {
         score = 0;
         getCoin.text = "Pièce : " + score;
 
+        enemy1.mob.revive();
+
 	},
 
 	/*getCoin:function(){
