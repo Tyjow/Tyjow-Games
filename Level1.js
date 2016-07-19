@@ -6,6 +6,7 @@ EnemyMob = function(index,game,x,y) {
 	game.physics.enable(this.mob, Phaser.Physics.ARCADE);
 	this.mob.body.immovable = true;
 	this.mob.body.collideWorldBounds = true;
+	this.mob.body.setSize(48, 48, 0, 0);
 	this.mob.body.allowGravity = false;
 	this.mob.animations.add('monster',[0,1,2,3],10,true);
 	this.mob.animations.play('monster');
@@ -66,6 +67,7 @@ Game.Level1.prototype = {
         map.setCollisionBetween(0,2);
 
         map.setTileIndexCallback(3, this.resetPlayer,this);
+        map.setTileLocationCallback(2, 0, 1, 1, this.resetPlayer, this);
 
         // index du tile de la piece en tile //
         //map.setTileIndexCallback(4, this.getCoin,this);
