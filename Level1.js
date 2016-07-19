@@ -227,10 +227,10 @@ Game.Level1.prototype = {
             //player.frame = 5;
         }*/
 
-        /*if(checkOverlap(player,enemy1.mob)) {
+        if(checkOverlap(player,enemy1.mob)) {
         	this.resetPlayer();
 
-        }*/
+        }
 
         if(controls.shoot.isDown) {
         	this.shootBall();
