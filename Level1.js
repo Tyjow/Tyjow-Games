@@ -249,14 +249,16 @@ Game.Level1.prototype = {
 
 	resetPlayer:function(){
 		player.reset(100,560);
-        for (var i = 0; i < coins.children.length; i++)
-        //for (var i in coins.children)
-		  coins.children[i].revive();
+		enemy1.mob.revive();
+		
+        for (var i = 0; i < coins.children.length; i++){
+        	//for (var i in coins.children)
+		  	coins.children[i].revive();
+        }
 
         score = 0;
         getCoin.text = "Pièce : " + score;
 
-        enemy1.mob.revive();
 
 	},
 
