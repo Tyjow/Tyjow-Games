@@ -43,7 +43,7 @@ var player;
 var controls = {};
 var playerSpeed = 150;
 var jumpTimer = 0;
-var facing = 'left';
+var facing;
 
 //var fireRate = 100;
 var shootTime = 0;
@@ -154,7 +154,8 @@ Game.Level1.prototype = {
         (getCoin).fixedToCamera = true;
 
         purple_ball = game.add.group();
-        purple_ball.enableBody = true;
+        game.physics.enable(purple_ball, Phaser.Physics.ARCADE);
+        /*purple_ball.enableBody = true;
         purple_ball.physicsBodyType = Phaser.Physics.ARCADE;
         purple_ball.createMultiple(5,'purple_ball');
 
@@ -165,7 +166,7 @@ Game.Level1.prototype = {
         purple_ball.setAll('scale.y', 0.5);
 
         purple_ball.setAll('outOfBoundsKill', true);
-        purple_ball.setAll('checkWorldBounds', true);
+        purple_ball.setAll('checkWorldBounds', true);*/
         
 	},
 
@@ -267,18 +268,62 @@ Game.Level1.prototype = {
 	}*/
 
 	shootBall:function(){
-		if(this.time.now > shootTime){
-			//shootTime = this.time.now + fireRate; 
+
+		if (shootTime < this.time.now) {
+		    shootTime = this.time.now + 600;
+		    var bullet = purple_ball.getFirstExists(false);
+
+		    if (facing == 'right') {
+		      bullet = purple_ball.create(player.x, player.y, 'purple_ball');
+		      //bullet = purple_ball.create(player.body.x + player.body.width / 2 + 20, player.body.y + player.body.height / 2 - 4, 'purple_ball');
+		    } 
+
+		    else {
+		      bullet = purple_ball.create(player.x, player.y, 'purple_ball');
+		      //bullet = purple_ball.create(player.body.x + player.body.width / 2 + 20, player.body.y + player.body.height / 2 - 4, 'purple_ball');
+		    }
+
+		    this.physics.enable(bullet, Phaser.Physics.ARCADE);
+
+		    bullet.outOfBoundsKill = true;
+		    bullet.anchor.setTo(0.5, 0.5);
+		    purple_ball.setAll('scale.x', 0.7);
+        	purple_ball.setAll('scale.y', 0.7);
+		    bullet.body.velocity.y = 0;
+		    bullet.body.allowGravity = false;
+
+		    if (facing == 'right') {
+		      bullet.body.velocity.x = 400;
+		    }
+
+		    else {
+		      bullet.body.velocity.x = -400;
+		    }
+
+		    if (facing == 'idle') {
+		    	bullet.body.velocity.x = 400;
+		    }
+		}
+
+
+
+
+
+
+
+		/*if(this.time.now > shootTime){
+			//shootTime = this.time.now + fireRate;
+			shootTime = this.time.now + 950;
 			bally = purple_ball.getFirstExists(false);
+
 			if(bally){
 				bally.reset(player.x, player.y);
 
 				bally.body.velocity.x = 600;
 				bally.body.allowGravity = false;
-
-				shootTime = this.time.now + 950;
+		
 			}
-		}
+		}*/
 	}
 
 }
