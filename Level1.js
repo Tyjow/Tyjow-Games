@@ -172,7 +172,7 @@ Game.Level1.prototype = {
 	update:function(){
         
         this.physics.arcade.collide(player,layer);
-        this.physics.arcade.collide(player,enemy1.mob,this.reset);
+        this.physics.arcade.collide(player,enemy1.mob,this.resetPlayer);
 
         player.body.velocity.x = 0;
         
@@ -228,10 +228,10 @@ Game.Level1.prototype = {
             //player.frame = 5;
         }*/
 
-        if(checkOverlap(player,enemy1.mob)) {
+        /*if(checkOverlap(player,enemy1.mob)) {
         	this.resetPlayer();
 
-        }
+        }*/
 
         if(controls.shoot.isDown) {
         	this.shootBall();
