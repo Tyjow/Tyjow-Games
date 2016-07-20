@@ -50,6 +50,7 @@ var facing;
 //var fireRate = 100;
 var shootTime = 0;
 var purple_ball;
+var boom;
 
 Game.Level1.prototype = {
 	create:function(game){
@@ -176,6 +177,12 @@ Game.Level1.prototype = {
 
         purple_ball.setAll('outOfBoundsKill', true);
         purple_ball.setAll('checkWorldBounds', true);*/
+
+        boom = game.add.sprite(enemy1.mob.body.x - 50, enemy1.mob.body.y, 'explosion');
+		game.physics.enable(boom, Phaser.Physics.ARCADE);
+		boom.animations.add('death', null, 25);
+		boom.animations.play('death');
+		boom.body.allowGravity = false;
         
 	},
 
@@ -255,6 +262,11 @@ Game.Level1.prototype = {
 
         this.physics.arcade.overlap(player, coins, collectCoin, null, this);
         this.physics.arcade.collide(purple_ball, enemy1.mob, hitEnemy, null, this);
+
+        if (enemyHP <= 0 && gameState) {
+		    enemyDies();
+		    gameState = false;
+		}
 
 
 
@@ -355,6 +367,13 @@ function checkOverlap(spriteA, spriteB){
 
 function hitEnemy(enemy,purple_ball) {
   purple_ball.kill();
-  enemy1.mob.kill();
+  //enemy1.mob.kill();
   enemyHP -= 2;
+}
+
+gameState = true;
+function enemyDies() {
+  enemy1.mob.kill();
+  setTimeout(function() {game.world.remove(boom);},1000);
+  //winText = game.add.text(game.width / 2 - 50, game.height / 2, "YOU WIN!", {font: "30px Arial", fill: "#FF0000"});
 }
