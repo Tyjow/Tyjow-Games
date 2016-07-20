@@ -33,6 +33,8 @@ Game.Preloader.prototype = {
         this.load.image('titlescreen', 'assets/titlescreen.png');
 
         this.load.image('main-button', 'assets/main-button.png');
+
+        this.load.image('bg-nuit', 'assets/Nuit.png');
         
         
 	},
