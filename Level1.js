@@ -10,6 +10,7 @@ EnemyMob = function(index,game,x,y) {
 	this.mob.body.allowGravity = false;
 	this.mob.animations.add('monster',[0,1,2,3],10,true);
 	this.mob.animations.play('monster');
+	enemyText = game.add.text(this.mob.body.x, this.mob.body.y - 30, enemyHP, { font: "20px Arial", fill: "red" });
 
 	this.mobTween = game.add.tween(this.mob).to({
 		// 25 veut dire 25 pixel (maintenant à 100)
@@ -25,16 +26,17 @@ addCoin = function(game,x,y){
     coin.body.allowGravity = false;
     coin.animations.add('spin',[0, 1, 2, 3, 4, 5], 10, true);
     coin.animations.play('spin');
-
 }
 
 var enemy1;
+var enemyHP = 1;
 
 Game.Level1 = function(game) {};
 
 var map;
 var layer;
 
+var bg;
 var score = 0;
 var getCoin;
 var coins;
@@ -51,6 +53,13 @@ var purple_ball;
 
 Game.Level1.prototype = {
 	create:function(game){
+
+		//bg = this.add.tileSprite(0, 0, 1500, 600, "bg-nuit");
+
+		/*var backgroundScaleWidth = 1500 / bg.texture.frame.width;
+		var backgroundScaleHeight = backgroundScaleWidth/16 * 9;*/
+
+		//bg.scale.setTo(1, 1.1);
 
 		this.stage.backgroundColor = '#16cad0';
         
@@ -172,6 +181,8 @@ Game.Level1.prototype = {
 
 	update:function(){
         
+		//bg.tilePosition.x += 1;
+
         this.physics.arcade.collide(player,layer);
         this.physics.arcade.collide(player,enemy1.mob,this.resetPlayer);
 
@@ -238,11 +249,12 @@ Game.Level1.prototype = {
         	this.shootBall();
         }
 
-        if(checkOverlap(purple_ball, enemy1.mob)) {
+        /*if(checkOverlap(purple_ball, enemy1.mob)) {
         	enemy1.mob.kill();
-        }
+        }*/
 
         this.physics.arcade.overlap(player, coins, collectCoin, null, this);
+        this.physics.arcade.collide(purple_ball, enemy1.mob, hitEnemy, null, this);
 
 
 
@@ -310,7 +322,6 @@ Game.Level1.prototype = {
 
 
 
-
 		/*if(this.time.now > shootTime){
 			//shootTime = this.time.now + fireRate;
 			shootTime = this.time.now + 950;
@@ -325,7 +336,6 @@ Game.Level1.prototype = {
 			}
 		}*/
 	}
-
 }
 
 function collectCoin (player, coins) {
@@ -341,5 +351,10 @@ function checkOverlap(spriteA, spriteB){
 	var boundsB = spriteB.getBounds();
 
 	return Phaser.Rectangle.intersects(boundsA,boundsB);
+}
 
+function hitEnemy(enemy,purple_ball) {
+  purple_ball.kill();
+  enemy1.mob.kill();
+  enemyHP -= 2;
 }
