@@ -10,7 +10,7 @@ EnemyMob = function(index,game,x,y) {
 	this.mob.body.allowGravity = false;
 	this.mob.animations.add('monster',[0,1,2,3],10,true);
 	this.mob.animations.play('monster');
-	//enemyText = game.add.text(this.mob.body.x, this.mob.body.y - 30, enemyHP, { font: "20px Arial", fill: "red" });
+	enemyText = game.add.text(this.mob.body.x, this.mob.body.y - 30, enemyHP, { font: "20px Arial", fill: "red" });
 
 	this.mobTween = game.add.tween(this.mob).to({
 		// 25 veut dire 25 pixel (maintenant à 100)
@@ -268,13 +268,15 @@ Game.Level1.prototype = {
 		    gameState = false;
 		}
 
-
+        updateEnemyHP(this.game);
 
 	},
 
 	resetPlayer:function(){
 		player.reset(100,560);
 		enemy1.mob.revive();
+        enemyHP = 1;
+        gameState = true;
 		
         for (var i = 0; i < coins.children.length; i++){
         	//for (var i in coins.children)
@@ -368,7 +370,14 @@ function checkOverlap(spriteA, spriteB){
 function hitEnemy(enemy,purple_ball) {
   purple_ball.kill();
   //enemy1.mob.kill();
-  enemyHP -= 2;
+  enemyHP --;
+}
+
+function updateEnemyHP(game) {
+  enemyText.destroy();
+  if (enemyHP != 0){
+    enemyText = game.add.text(enemy1.mob.body.x + 20, enemy1.mob.body.y - 20, enemyHP, { font: "20px Arial", fill: "red" });
+  }
 }
 
 gameState = true;
