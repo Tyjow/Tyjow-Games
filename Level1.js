@@ -10,7 +10,7 @@ EnemyMob = function(index,game,x,y) {
 	this.mob.body.allowGravity = false;
 	this.mob.animations.add('monster',[0,1,2,3],10,true);
 	this.mob.animations.play('monster');
-	enemyText = game.add.text(this.mob.body.x, this.mob.body.y - 30, enemyHP, { font: "20px Arial", fill: "red" });
+	//enemyText = game.add.text(this.mob.body.x, this.mob.body.y - 30, enemyHP, { font: "20px Arial", fill: "red" });
 
 	this.mobTween = game.add.tween(this.mob).to({
 		// 25 veut dire 25 pixel (maintenant à 100)
@@ -50,6 +50,7 @@ var facing;
 //var fireRate = 100;
 var shootTime = 0;
 var purple_ball;
+//var mobDies;
 var boom;
 
 Game.Level1.prototype = {
@@ -153,6 +154,10 @@ Game.Level1.prototype = {
 
         enemy1 = new EnemyMob(0,game,player.x+450,player.y-280);
 
+        //mobDies = new enemyDies(game);
+
+
+
         //var piece = this.add.sprite('coin'); piece + 
 
         getCoin = game.add.text(30, 30, "Pièce : 0", { font: "25px Arial", fill: "rgba(0, 0, 77, 0.8)" });
@@ -177,12 +182,6 @@ Game.Level1.prototype = {
 
         purple_ball.setAll('outOfBoundsKill', true);
         purple_ball.setAll('checkWorldBounds', true);*/
-
-        boom = game.add.sprite(enemy1.mob.body.x - 50, enemy1.mob.body.y, 'explosion');
-		game.physics.enable(boom, Phaser.Physics.ARCADE);
-		boom.animations.add('death', null, 25);
-		boom.animations.play('death');
-		boom.body.allowGravity = false;
         
 	},
 
@@ -263,10 +262,10 @@ Game.Level1.prototype = {
         this.physics.arcade.overlap(player, coins, collectCoin, null, this);
         this.physics.arcade.collide(purple_ball, enemy1.mob, hitEnemy, null, this);
 
-        if (enemyHP <= 0 && gameState) {
+        /*if (enemyHP <= 0 && gameState) {
 		    enemyDies();
 		    gameState = false;
-		}
+		}*/
 
 
 
@@ -367,13 +366,18 @@ function checkOverlap(spriteA, spriteB){
 
 function hitEnemy(enemy,purple_ball) {
   purple_ball.kill();
-  //enemy1.mob.kill();
+  enemy1.mob.kill();
   enemyHP -= 2;
 }
 
-gameState = true;
-function enemyDies() {
-  enemy1.mob.kill();
-  setTimeout(function() {game.world.remove(boom);},1000);
+/*gameState = true;
+function enemyDies (game){
+  	enemy1.mob.kill();
+  	boom = game.add.sprite(enemy1.mob.body.x - 50, enemy1.mob.body.y, 'explosion');
+	game.physics.enable(boom, Phaser.Physics.ARCADE);
+	boom.animations.add('death', null, 25);
+	boom.animations.play('death');
+	boom.body.allowGravity = false;
+  	setTimeout(function() {game.world.remove(boom);},1000);
   //winText = game.add.text(game.width / 2 - 50, game.height / 2, "YOU WIN!", {font: "30px Arial", fill: "#FF0000"});
-}
+}*/
