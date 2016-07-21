@@ -11,6 +11,8 @@ EnemyMob = function(index,game,x,y) {
 	this.mob.animations.add('monster',[0,1,2,3],10,true);
 	this.mob.animations.play('monster');
 	enemyText = game.add.text(this.mob.body.x, this.mob.body.y - 30, enemyHP, { font: "20px Arial", fill: "red" });
+	var barConfig = {x: 200, y: 100};
+    this.myHealthBar = new HealthBar(game, barConfig);
 
 	this.mobTween = game.add.tween(this.mob).to({
 		// 25 veut dire 25 pixel (maintenant à 100)
