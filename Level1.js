@@ -10,9 +10,12 @@ EnemyMob = function(index,game,x,y) {
 	this.mob.body.allowGravity = false;
 	this.mob.animations.add('monster',[0,1,2,3],10,true);
 	this.mob.animations.play('monster');
-	enemyText = game.add.text(this.mob.body.x, this.mob.body.y - 30, enemyHP, { font: "20px Arial", fill: "red" });
-	var barConfig = {x: 200, y: 100};
-    this.myHealthBar = new HealthBar(game, barConfig);
+	//enemyText = game.add.text(this.mob.body.x, this.mob.body.y - 30, enemyHP, { font: "20px Arial", fill: "red" });
+	enemyText = new HealthBar(game, {x: this.mob.body.x + 30, y: this.mob.body.y - 10, enemyHP});
+    //this.myHealthBar = new HealthBar(game, enemyHP, {x: this.mob.body.x, y: this.mob.body.y});
+    //var mobHP = this.myHealthBar.setPercent(100);
+	//var enemyHP = mobHP;
+	//var enemyText = this.myHealthBar;
 
 	this.mobTween = game.add.tween(this.mob).to({
 		// 25 veut dire 25 pixel (maintenant à 100)
@@ -155,7 +158,8 @@ Game.Level1.prototype = {
         addCoin(game,935,370);
         addCoin(game,985,370);
 
-        enemy1 = new EnemyMob(0,game,player.x+450,player.y-280);
+        enemy1 = new EnemyMob(0,game,550,280);
+        //EnemyMob(0,game,650,280);
 
         //mobDies = new enemyDies(game);
 
@@ -361,13 +365,13 @@ function collectCoin (player, coins) {
     getCoin.text = "Pièces : " + score;
 }
 
-function checkOverlap(spriteA, spriteB){
+/*function checkOverlap(spriteA, spriteB){
 
 	var boundsA = spriteA.getBounds();
 	var boundsB = spriteB.getBounds();
 
 	return Phaser.Rectangle.intersects(boundsA,boundsB);
-}
+}*/
 
 function hitEnemy(enemy,purple_ball) {
   purple_ball.kill();
@@ -376,9 +380,10 @@ function hitEnemy(enemy,purple_ball) {
 }
 
 function updateEnemyHP(game) {
-  enemyText.destroy();
+  enemyText.kill();
   if (enemyHP != 0){
-    enemyText = game.add.text(enemy1.mob.body.x + 20, enemy1.mob.body.y - 20, enemyHP, { font: "20px Arial", fill: "red" });
+    //enemyText = game.add.text(enemy1.mob.body.x + 20, enemy1.mob.body.y - 20, enemyHP, { font: "20px Arial", fill: "red" });
+    enemyText = new HealthBar(game, {x: enemy1.mob.body.x + 30, y: enemy1.mob.body.y - 10, enemyHP});
   }
 }
 
