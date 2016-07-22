@@ -29,7 +29,7 @@ addCoin = function(game,x,y){
     coin = coins.create(x,y,'coin');
     coin.anchor.setTo(0.5,0.5);
     coin.body.allowGravity = false;
-    coin.animations.add('spin',[0, 1, 2, 3, 4, 5], 10, true);
+    coin.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 10, true);
     coin.animations.play('spin');
 }
 
@@ -52,6 +52,7 @@ var controls = {};
 var playerSpeed = 150;
 var jumpTimer = 0;
 var facing;
+var imgCoin;
 
 //var fireRate = 100;
 var shootTime = 0;
@@ -110,6 +111,14 @@ Game.Level1.prototype = {
             shoot: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
 
+        imgCoin = this.add.button(30,30, 'coin', function(){
+            console.log('pressed');
+        },this,2,1,0);
+
+        imgCoin.fixedToCamera = true;
+        imgCoin.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 10, true);
+        imgCoin.animations.play('spin');
+
         coins = game.add.group();
         coins.enableBody = true;
 
@@ -167,11 +176,11 @@ Game.Level1.prototype = {
 
         //var piece = this.add.sprite('coin'); piece + 
 
-        getCoin = game.add.text(30, 30, "Pièce : 0", { font: "25px Arial", fill: "rgba(0, 0, 77, 0.8)" });
+        getCoin = game.add.text(75, 35, "x 0", { font: "25px Arial", fill: "#000" });
         getCoin.fontWeight = 'bold';
-        getCoin.stroke = "#9494b8";
+        getCoin.stroke = "#d6d6c2";
         getCoin.strokeThickness = 8;
-        getCoin.setShadow(2, 2, "#66ee99", 2, false, true);
+        //getCoin.setShadow(2, 2, "#66ee99", 2, false, true);
 
         (getCoin).fixedToCamera = true;
 
@@ -290,7 +299,7 @@ Game.Level1.prototype = {
         }
 
         score = 0;
-        getCoin.text = "Pièce : " + score;
+        getCoin.text = "x " + score;
 
 
 	},
@@ -362,7 +371,7 @@ function collectCoin (player, coins) {
 
     coins.kill();
     score ++;
-    getCoin.text = "Pièces : " + score;
+    getCoin.text = "x " + score;
 }
 
 /*function checkOverlap(spriteA, spriteB){

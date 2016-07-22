@@ -26,7 +26,9 @@ Game.Preloader.prototype = {
 
         this.load.spritesheet('buttons', 'assets/buttons.png',193,71);
 
-        this.load.spritesheet('coin', 'assets/coin.png',32,32);
+        this.load.spritesheet('coin', 'assets/coin.png',41,42);
+
+        this.load.spritesheet('coin', 'assets/coin.png',41,42);
 
         this.load.spritesheet('mob', 'assets/mob.png',64,64);
 
