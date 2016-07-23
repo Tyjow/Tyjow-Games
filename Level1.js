@@ -190,6 +190,14 @@ Game.Level1.prototype = {
         addCoin(game,665,530);
         addCoin(game,935,330);
         addCoin(game,985,330);
+        addCoin(game,1130,400);
+        addCoin(game,1180,400);
+        addCoin(game,1550,400);
+        addCoin(game,1600,400);
+        addCoin(game,1830,270);
+        addCoin(game,1880,270);
+        addCoin(game,1670,100);
+        addCoin(game,1720,100);
 
         enemy1 = new EnemyMob(0,game,550,340);
         //EnemyMob(0,game,650,280);
