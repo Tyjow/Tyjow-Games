@@ -16,7 +16,7 @@ Game.Preloader.prototype = {
 
 		//Load all assets (Charge tous les assets)
         
-        this.load.tilemap('map', 'assets/map01.csv');
+        this.load.tilemap('map', 'assets/map01.json',null, Phaser.Tilemap.TILED_JSON);
         
         this.load.image('tileset', 'assets/tileset.png');
 

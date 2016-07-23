@@ -41,6 +41,13 @@ Game.Level1 = function(game) {};
 
 var map;
 var layer;
+var layer2;
+var layer3;
+var layer4;
+var layer5;
+var layer6;
+var layer7;
+var layer8;
 
 var bg;
 var score = 0;
@@ -76,15 +83,23 @@ Game.Level1.prototype = {
         
         this.physics.arcade.gravity.y = 1400;
         
-        map = this.add.tilemap('map',64,64);
+        map = this.add.tilemap('map');
         
-        map.addTilesetImage('tileset');
+        map.addTilesetImage('tileset', 'tileset');
         
-        layer = map.createLayer(0);
+        layer8 = map.createLayer('Roc');
+        layer6 = map.createLayer('ArbreBig');
+        layer7 = map.createLayer('TeteArbre');
+        layer = map.createLayer('Principal');
+        layer5 = map.createLayer('BackMush');
+        layer3 = map.createLayer('FrontBack');
+        layer2 = map.createLayer('Front');
+        layer4 = map.createLayer('FrontMush');
         
         layer.resizeWorld();
       
         map.setCollisionBetween(0,10);
+        //map.setTileIndexCallback(22, this.resetPlayer,this);
 
         // set those box top tiles to only collide from above
 	    setTileCollision(layer, [0,1,2,3,4,5,6,7,8,9,10], {
@@ -94,12 +109,10 @@ Game.Level1.prototype = {
 	        right: false
 	    });
 
-        //map.setTileIndexCallback(3, this.resetPlayer,this);
-
         // index du tile de la piece en tile //
         //map.setTileIndexCallback(4, this.getCoin,this);
         
-        player = this.add.sprite(100,460,'player');
+        player = this.add.sprite(100,560,'player');
         player.anchor.setTo(0.5,0.5);
         
         //player.animations.add('idle',[0,1],1,true);
@@ -254,7 +267,7 @@ Game.Level1.prototype = {
     	}
 
     	if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
-	        player.body.velocity.y = -600;
+	        player.body.velocity.y = -500;
 	        jumpTimer = this.time.now + 750;
 	    }
 
@@ -460,5 +473,4 @@ function setTileCollision(mapLayer, idxOrArray, dirs) {
             }
         }
     }
- 
 }
