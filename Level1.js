@@ -53,6 +53,7 @@ var playerSpeed = 150;
 var jumpTimer = 0;
 var facing;
 var imgCoin;
+var bush1;
 
 //var fireRate = 100;
 var shootTime = 0;
@@ -64,6 +65,7 @@ Game.Level1.prototype = {
 	create:function(game){
 
 		//bg = this.add.tileSprite(0, 0, 1500, 600, "bg-nuit");
+		bg = this.add.tileSprite(0, 0, 2700, 750, "bg");
 
 		/*var backgroundScaleWidth = 1500 / bg.texture.frame.width;
 		var backgroundScaleHeight = backgroundScaleWidth/16 * 9;*/
@@ -81,15 +83,23 @@ Game.Level1.prototype = {
         layer = map.createLayer(0);
         
         layer.resizeWorld();
-        
-        map.setCollisionBetween(0,2);
+      
+        map.setCollisionBetween(0,10);
 
-        map.setTileIndexCallback(3, this.resetPlayer,this);
+        // set those box top tiles to only collide from above
+	    setTileCollision(layer, [0,1,2,3,4,5,6,7,8,9,10], {
+	        top: true,
+	        bottom: false,
+	        left: false,
+	        right: false
+	    });
+
+        //map.setTileIndexCallback(3, this.resetPlayer,this);
 
         // index du tile de la piece en tile //
         //map.setTileIndexCallback(4, this.getCoin,this);
         
-        player = this.add.sprite(100,560,'player');
+        player = this.add.sprite(100,460,'player');
         player.anchor.setTo(0.5,0.5);
         
         //player.animations.add('idle',[0,1],1,true);
@@ -101,6 +111,9 @@ Game.Level1.prototype = {
         this.physics.arcade.enable(player);
         this.camera.follow(player);
         player.body.collideWorldBounds = true;
+	    player.body.checkCollision.up = false;
+	    //player.body.checkCollision.left = false;
+	    //player.body.checkCollision.right = false;
         player.body.bounce.y = 0.2;
         player.body.setSize(20, 32, 5, 16);
 
@@ -111,9 +124,7 @@ Game.Level1.prototype = {
             shoot: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
 
-        imgCoin = this.add.button(30,30, 'coin', function(){
-            console.log('pressed');
-        },this,2,1,0);
+        imgCoin = this.add.sprite(30,30, 'coin');
 
         imgCoin.fixedToCamera = true;
         imgCoin.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 10, true);
@@ -162,12 +173,12 @@ Game.Level1.prototype = {
         addCoin(game,300,420);
         addCoin(game,350,420);
         addCoin(game,400,420);
-        addCoin(game,615,510);
-        addCoin(game,665,510);
-        addCoin(game,935,370);
-        addCoin(game,985,370);
+        addCoin(game,615,530);
+        addCoin(game,665,530);
+        addCoin(game,935,330);
+        addCoin(game,985,330);
 
-        enemy1 = new EnemyMob(0,game,550,280);
+        enemy1 = new EnemyMob(0,game,550,340);
         //EnemyMob(0,game,650,280);
 
         //mobDies = new enemyDies(game);
@@ -406,4 +417,48 @@ function enemyDies (game){
 	boom.body.allowGravity = false;
   	setTimeout(function() {game.world.remove(boom);},1000);
   //winText = game.add.text(game.width / 2 - 50, game.height / 2, "YOU WIN!", {font: "30px Arial", fill: "#FF0000"});
+}
+
+function setTileCollision(mapLayer, idxOrArray, dirs) {
+ 
+    var mFunc; // tile index matching function
+    if (idxOrArray.length) {
+        // if idxOrArray is an array, use a function with a loop
+        mFunc = function(inp) {
+            for (var i = 0; i < idxOrArray.length; i++) {
+                if (idxOrArray[i] === inp) {
+                    return true;
+                }
+            }
+            return false;
+        };
+    } else {
+        // if idxOrArray is a single number, use a simple function
+        mFunc = function(inp) {
+            return inp === idxOrArray;
+        };
+    }
+ 
+    // get the 2-dimensional tiles array for this layer
+    var d = mapLayer.map.layers[mapLayer.index].data;
+     
+    for (var i = 0; i < d.length; i++) {
+        for (var j = 0; j < d[i].length; j++) {
+            var t = d[i][j];
+            if (mFunc(t.index)) {
+                 
+                t.collideUp = dirs.top;
+                t.collideDown = dirs.bottom;
+                t.collideLeft = dirs.left;
+                t.collideRight = dirs.right;
+                 
+                t.faceTop = dirs.top;
+                t.faceBottom = dirs.bottom;
+                t.faceLeft = dirs.left;
+                t.faceRight = dirs.right;
+                 
+            }
+        }
+    }
+ 
 }

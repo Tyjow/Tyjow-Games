@@ -28,8 +28,6 @@ Game.Preloader.prototype = {
 
         this.load.spritesheet('coin', 'assets/coin.png',41,42);
 
-        this.load.spritesheet('coin', 'assets/coin.png',41,42);
-
         this.load.spritesheet('mob', 'assets/mob.png',64,64);
 
         this.load.image('titlescreen', 'assets/titlescreen.png');
@@ -37,6 +35,8 @@ Game.Preloader.prototype = {
         this.load.image('main-button', 'assets/main-button.png');
 
         this.load.image('bg-nuit', 'assets/Nuit.png');
+
+        this.load.image('bg', 'assets/BG.png');
 
         this.load.spritesheet('explosion', 'assets/explosion.png',64,64);
         
