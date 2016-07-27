@@ -56,8 +56,6 @@ var controls = {};
 var playerSpeed = 150;
 var jumpTimer = 0;
 var facing;
-var facingRight = 'right';
-var facingLeft = 'left';
 var imgCoin;
 var bush1;
 
@@ -151,7 +149,7 @@ Game.Level1.prototype = {
         addCoin(game,1880,270);
         addCoin(game,1670,100);
         addCoin(game,1720,100);
-
+        
         enemyGroup = game.add.group();
         enemyGroup.enableBody = true;
         enemyGroup.physicsBodyType = Phaser.Physics.ARCADE;
@@ -204,7 +202,7 @@ Game.Level1.prototype = {
         if(controls.left.isDown){
             player.scale.setTo(1,1);
             player.body.velocity.x -= playerSpeed;
-            if(facing != 'left'){
+            if(facing !== 'left'){
             	player.animations.play('left');
             	facing = 'left';
             }
@@ -213,7 +211,7 @@ Game.Level1.prototype = {
         else if(controls.right.isDown){
             player.scale.setTo(1,1);
             player.body.velocity.x += playerSpeed;
-            if(facing != 'right'){
+            if(facing !== 'right'){
             	player.animations.play('right');
             	facing = 'right';
             }
@@ -221,7 +219,7 @@ Game.Level1.prototype = {
 
         else{
 
-	        if (facing != 'idle'){
+	        if (facing !== 'idle'){
 	            player.animations.stop();
 	            if (facing == 'left'){
 	                player.frame = 0;
@@ -337,13 +335,12 @@ Game.Level1.prototype = {
 		      bullet.body.velocity.x = 600;
 		    }
 
-		    else if (facing == 'left') {
+		    else {
 		      bullet.body.velocity.x = -600;
 		    }
 
-		    else if (facing == 'idle') {
-                facingRight = bullet.body.velocity.x = 600;
-		    	facingLeft = bullet.body.velocity.x = -600;
+		    if (facing == 'idle') {
+                bullet.body.velocity.x = 600;
 		    }
 		}
 
