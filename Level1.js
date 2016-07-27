@@ -12,8 +12,6 @@ EnemyMob = function(game,x,y) {
 	mob.animations.play('monster');
     mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10, enemyHP});
 
-	//enemyText = new HealthBar(game, {x: mob.body.x, y: mob.body.y, enemyHP});
-    //this.myHealthBar = new HealthBar(game, enemyHP, {x: this.mob.body.x, y: this.mob.body.y});
 	//this.myHealthBar.setPercent(100);
 
 	mob.mobTween = game.add.tween(mob).to({
@@ -58,6 +56,8 @@ var controls = {};
 var playerSpeed = 150;
 var jumpTimer = 0;
 var facing;
+var facingRight = 'right';
+var facingLeft = 'left';
 var imgCoin;
 var bush1;
 
@@ -337,12 +337,13 @@ Game.Level1.prototype = {
 		      bullet.body.velocity.x = 600;
 		    }
 
-		    else {
+		    else if (facing == 'left') {
 		      bullet.body.velocity.x = -600;
 		    }
 
-		    if (facing == 'idle') {
-		    	bullet.body.velocity.x = 600;
+		    else if (facing == 'idle') {
+                facingRight = bullet.body.velocity.x = 600;
+		    	facingLeft = bullet.body.velocity.x = -600;
 		    }
 		}
 
@@ -370,7 +371,7 @@ function collisionHandler (bullet, flymob) {
     enemyHP --;
 
     var explosion = boom.getFirstExists(false);
-    explosion.reset(flymob.body.x - 20, flymob.body.y);
+    explosion.reset(flymob.body.x + 30, flymob.body.y + 20);
     explosion.play('explosion', 25, false, true);
 }
 
