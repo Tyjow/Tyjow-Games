@@ -2,7 +2,7 @@ EnemyMob = function(game,x,y) {
 
 	mob = enemyGroup.create(x,y, 'mob');
 	mob.anchor.setTo(0.5,0.5);
-	//this.mob.name = index.toString();
+	mob.name = 'flymob';
 	game.physics.enable(mob, Phaser.Physics.ARCADE);
 	mob.body.immovable = true;
 	mob.body.collideWorldBounds = true;
@@ -11,7 +11,7 @@ EnemyMob = function(game,x,y) {
 	mob.animations.add('monster',[0,1,2,3],10,true);
 	mob.animations.play('monster');
 
-	enemyText = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10, enemyHP});
+	//enemyText = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10, enemyHP});
     //this.myHealthBar = new HealthBar(game, enemyHP, {x: this.mob.body.x, y: this.mob.body.y});
 	//this.myHealthBar.setPercent(100);
 
@@ -34,7 +34,7 @@ addCoin = function(game,x,y){
 Game.Level1 = function(game) {};
 
 var enemyGroup;
-var enemy1;
+var enemy;
 var enemyHP = 1;
 
 var map;
@@ -155,7 +155,7 @@ Game.Level1.prototype = {
         enemyGroup.enableBody = true;
         enemyGroup.physicsBodyType = Phaser.Physics.ARCADE;
 
-        enemy1 = new EnemyMob(game,550,340);
+        enemy = new EnemyMob(game,550,340);
         EnemyMob(game,650,340);
 
 
@@ -169,7 +169,18 @@ Game.Level1.prototype = {
         (getCoin).fixedToCamera = true;
 
         purple_ball = game.add.group();
-        game.physics.enable(purple_ball, Phaser.Physics.ARCADE);
+        purple_ball.enableBody = true;
+        purple_ball.physicsBodyType = Phaser.Physics.ARCADE;
+
+        for (var i = 0; i < 20; i++){
+
+            var b = purple_ball.create(0, 0, 'purple_ball');
+            b.name = 'purple_ball' + i;
+            b.exists = false;
+            b.visible = false;
+            b.checkWorldBounds = true;
+            b.events.onOutOfBounds.add(resetBullet, this);
+        }
 
         this.game = game;
 	},
@@ -177,7 +188,8 @@ Game.Level1.prototype = {
 	update:function(){
 
         this.physics.arcade.collide(player,layer);
-        this.physics.arcade.collide(player,enemyGroup,this.resetPlayer);
+        //this.physics.arcade.collide(player,enemyGroup,this.resetPlayer);
+        this.physics.arcade.overlap(purple_ball, enemyGroup, collisionHandler, null, this);
 
         player.body.velocity.x = 0;
         
@@ -223,14 +235,14 @@ Game.Level1.prototype = {
         }
 
         this.physics.arcade.overlap(player, coins, collectCoin, null, this);
-        this.physics.arcade.overlap(purple_ball, enemyGroup, hitEnemy, null, this);
+        //this.physics.arcade.overlap(purple_ball, enemyGroup, enemyDies, null, this);
 
-        if (enemyHP <= 0 && gameState) {
+        /*if (enemyHP <= 0 && gameState) {
 		    enemyDies(this.game);
 		    gameState = false;
-		}
+		}*/
 
-        updateEnemyHP(this.game);
+        //updateEnemyHP(this.game);
 
 	},
 
@@ -242,8 +254,8 @@ Game.Level1.prototype = {
 		  	enemyGroup.children[i].revive();
         }
 
-        enemyHP = 1;
-        gameState = true;
+        //enemyHP = 1;
+        //gameState = true;
 		
         for (var i = 0; i < coins.children.length; i++){
         	//for (var i in coins.children)
@@ -256,7 +268,36 @@ Game.Level1.prototype = {
 
 	},
 
-	shootBall:function(){
+    shootBall:function(){
+
+        if (this.time.now > shootTime){
+
+            bullet = purple_ball.getFirstExists(false);
+
+            if (bullet){
+
+                bullet.reset(player.x + 6, player.y - 8);
+                bullet.body.velocity.y = 0;
+                bullet.body.allowGravity = false;
+                purple_ball.setAll('scale.x', 0.7);
+                purple_ball.setAll('scale.y', 0.7);
+                shootTime = this.time.now + 150;
+            }
+            if (facing == 'right') {
+              bullet.body.velocity.x = 600;
+            }
+
+            else {
+              bullet.body.velocity.x = -600;
+            }
+
+            if (facing == 'idle') {
+                bullet.body.velocity.x = 600;
+            }
+        }
+    },
+
+	/*shootBall:function(){
 
 		if (shootTime < this.time.now) {
 		    shootTime = this.time.now + 900;
@@ -272,7 +313,8 @@ Game.Level1.prototype = {
 
 		    this.physics.enable(bullet, Phaser.Physics.ARCADE);
 
-		    bullet.outOfBoundsKill = true;
+		    //bullet.outOfBoundsKill = true;
+            bullet.events.onOutOfBounds.add(hitEnemy, this);
 		    bullet.anchor.setTo(0.5, 0.5);
 		    purple_ball.setAll('scale.x', 0.7);
         	purple_ball.setAll('scale.y', 0.7);
@@ -292,7 +334,7 @@ Game.Level1.prototype = {
 		    }
 		}
 
-	}
+	},*/
 }
 
 function collectCoin (player, coins) {
@@ -302,28 +344,41 @@ function collectCoin (player, coins) {
     getCoin.text = "x " + score;
 }
 
-function hitEnemy(enemy,purple_ball) {
-  purple_ball.kill();
-  enemyHP --;
+function resetBullet (bullet) {
+
+    bullet.kill();
+
 }
 
-function updateEnemyHP(game) {
+function collisionHandler (bullet, flymob) {
+
+    bullet.kill();
+    flymob.kill();
+    //enemyHP --;
+}
+
+/*function hitEnemy(enemy,purple_ball) {
+  purple_ball.kill();
+  enemyHP --;
+}*/
+
+/*function updateEnemyHP(game) {
   enemyText.kill();
   if (enemyHP != 0){
     enemyText = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10, enemyHP});
   }
-}
+}*/
 
-gameState = true;
+/*gameState = true;
 function enemyDies (game){
-  	this.mob.kill();
+  	enemyGroup.kill();
   	boom = game.add.sprite(mob.body.x, mob.body.y, 'explosion');
 	game.physics.enable(boom, Phaser.Physics.ARCADE);
 	boom.animations.add('death', null, 25);
 	boom.animations.play('death');
 	boom.body.allowGravity = false;
   	setTimeout(function() {game.world.remove(boom);},1000);
-}
+}*/
 
 function setTileCollision(mapLayer, idxOrArray, dirs) {
  
