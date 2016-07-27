@@ -20,9 +20,9 @@ Game.Preloader.prototype = {
         
         this.load.image('tileset', 'assets/tileset.png');
 
-        this.load.image('purple_ball', 'assets/purple_ball.png');
+        this.load.image('purple_ball', 'assets/purple_ball.png',39,39);
         
-        this.load.spritesheet('player', 'assets/player.png',32,48);
+        this.load.spritesheet('player', 'assets/player.png',64,64);
 
         this.load.spritesheet('buttons', 'assets/buttons.png',193,71);
 

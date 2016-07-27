@@ -106,8 +106,10 @@ Game.Level1.prototype = {
         player = this.add.sprite(100,560,'player');
         player.anchor.setTo(0.5,0.5);
         
-        player.animations.add('left', [0, 1, 2, 3], 10, true);
-        player.animations.add('right', [5, 6, 7, 8], 10, true);
+        //player.animations.add('left', [0, 1, 2, 3], 10, true);
+        //player.animations.add('right', [5, 6, 7, 8], 10, true);
+        player.animations.add('left', [8, 7, 6, 5, 4, 3, 2, 1, 0], 10, true);
+        player.animations.add('right', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
         this.physics.arcade.enable(player);
         this.camera.follow(player);
         player.body.collideWorldBounds = true;
@@ -198,10 +200,11 @@ Game.Level1.prototype = {
         this.physics.arcade.overlap(purple_ball, enemyGroup, collisionHandler, null, this);
 
         player.body.velocity.x = 0;
-        
+
         if(controls.left.isDown){
             player.scale.setTo(1,1);
             player.body.velocity.x -= playerSpeed;
+
             if(facing !== 'left'){
             	player.animations.play('left');
             	facing = 'left';
@@ -222,10 +225,10 @@ Game.Level1.prototype = {
 	        if (facing !== 'idle'){
 	            player.animations.stop();
 	            if (facing == 'left'){
-	                player.frame = 0;
+	                player.frame = 8;
 	            }
 	            else{
-	                player.frame = 5;
+	                player.frame = 9;
 	            }
 	            facing = 'idle';
 	        }
@@ -326,8 +329,8 @@ Game.Level1.prototype = {
 		    //bullet.outOfBoundsKill = true;
             bullet.events.onOutOfBounds.add(resetBullet, this);
 		    bullet.anchor.setTo(0.5, 0.5);
-		    purple_ball.setAll('scale.x', 0.7);
-        	purple_ball.setAll('scale.y', 0.7);
+		    purple_ball.setAll('scale.x', 1.2);
+        	purple_ball.setAll('scale.y', 1.2);
 		    bullet.body.velocity.y = 0;
 		    bullet.body.allowGravity = false;
 
