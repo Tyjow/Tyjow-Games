@@ -108,8 +108,9 @@ Game.Level1.prototype = {
         
         //player.animations.add('left', [0, 1, 2, 3], 10, true);
         //player.animations.add('right', [5, 6, 7, 8], 10, true);
-        player.animations.add('left', [8, 7, 6, 5, 4, 3, 2, 1, 0], 10, true);
-        player.animations.add('right', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
+        player.animations.add('left', [8, 7, 6, 5, 4, 3, 2, 1, 0], 15, true);
+        player.animations.add('right', [9, 10, 11, 12, 13, 14, 15, 16, 17], 15, true);
+        //player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28], 10, true);
         this.physics.arcade.enable(player);
         this.camera.follow(player);
         player.body.collideWorldBounds = true;
@@ -237,6 +238,7 @@ Game.Level1.prototype = {
     	if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
 	        player.body.velocity.y = -500;
 	        jumpTimer = this.time.now + 750;
+	        //player.animations.play('jump');
 	    }
 
         if(controls.shoot.isDown) {

@@ -22,7 +22,7 @@ Game.Preloader.prototype = {
 
         this.load.image('purple_ball', 'assets/purple_ball.png',39,39);
         
-        this.load.spritesheet('player', 'assets/player.png',64,64);
+        this.load.spritesheet('player', 'assets/player.png',48,64);
 
         this.load.spritesheet('buttons', 'assets/buttons.png',193,71);
 
