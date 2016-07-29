@@ -105,10 +105,11 @@ Game.Level1.prototype = {
 
         player = this.add.sprite(100,560,'player');
         player.anchor.setTo(0.5,0.5);
+        player.frame = 9;
         
         //player.animations.add('left', [0, 1, 2, 3], 10, true);
         //player.animations.add('right', [5, 6, 7, 8], 10, true);
-        player.animations.add('idle', [0], 1, true);
+        //player.animations.add('idle', [0], 1, true);
         player.animations.add('left', [8, 7, 6, 5, 4, 3, 2, 1, 0], 10, true);
         player.animations.add('right', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
         //player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28], 10, true);
