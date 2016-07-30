@@ -178,19 +178,38 @@ Game.Level1.prototype = {
 
         (getCoin).fixedToCamera = true;
 
+	    // Define constants
+	    this.SHOT_DELAY = 300; // milliseconds (10 bullets/second)
+	    //this.BULLET_SPEED = 500; // pixels/second
+	    this.NUMBER_OF_BULLETS = 10;
+
         purple_ball = game.add.group();
+        purple_ball.setAll('scale.x', 0.3);
+        purple_ball.setAll('scale.y', 0.3);
+
+	    for(var i = 0; i < this.NUMBER_OF_BULLETS; i++) {
+	        // Create each bullet and add it to the group.
+	        var bullet = game.add.sprite(0, 0, 'purple_ball');
+	        purple_ball.add(bullet);
+
+	        // Set its pivot point to the center of the bullet
+	        bullet.anchor.setTo(0.5, 0.3);
+
+	        // Enable physics on the bullet
+	        this.physics.enable(bullet, Phaser.Physics.ARCADE);
+
+	        // Set its initial state to "dead".
+	        bullet.kill();
+	    }
+        /*purple_ball = game.add.group();
         purple_ball.enableBody = true;
         purple_ball.physicsBodyType = Phaser.Physics.ARCADE;
+        purple_ball.setAll('outOfBoundsKill', true);
+    	purple_ball.setAll('checkWorldBounds', true);
 
-        /*for (var i = 0; i < 2; i++){
+        purple_ball.createMultiple(3, 'purple_ball');*/
 
-            var b = purple_ball.create(0, 0, 'purple_ball');
-            b.name = 'purple_ball' + i;
-            b.exists = false;
-            b.visible = false;
-            b.checkWorldBounds = true;
-            b.events.onOutOfBounds.add(resetBullet, this);
-        }*/
+
 
         this.game = game;
 
@@ -287,47 +306,75 @@ Game.Level1.prototype = {
 
 	},
 
-    /*shootBall:function(){
+    shootBall:function(){
 
-        if (this.time.now > shootTime){
+		// Enforce a short delay between shots by recording
+		// the time that each bullet is shot and testing if
+		// the amount of time since the last shot is more than
+		// the required delay.
+		if (this.lastBulletShotAt === undefined) this.lastBulletShotAt = 0;
+		if (this.time.now - this.lastBulletShotAt < this.SHOT_DELAY) return;
+		this.lastBulletShotAt = this.time.now;
 
-            bullet = purple_ball.getFirstExists(false);
+		// Get a dead bullet from the pool
+		var bullet = purple_ball.getFirstDead();
 
-            if (bullet){
+		// If there aren't any bullets available then don't shoot
+		if (bullet === null || bullet === undefined) return;
 
-                bullet.reset(player.x + 6, player.y - 8);
-                bullet.body.velocity.y = 0;
-                bullet.body.allowGravity = false;
-                purple_ball.setAll('scale.x', 0.7);
-                purple_ball.setAll('scale.y', 0.7);
-                shootTime = this.time.now + 150;
-            }
-            if (facing == 'right') {
-              bullet.body.velocity.x = 600;
-            }
+		// Revive the bullet
+		// This makes the bullet "alive"
+		bullet.revive();
 
-            else {
-              bullet.body.velocity.x = -600;
-            }
+		// Bullets should kill themselves when they leave the world.
+		// Phaser takes care of this for me by setting this flag
+		// but you can do it yourself by killing the bullet if
+		// its x,y coordinates are outside of the world.
+		bullet.checkWorldBounds = true;
+		bullet.outOfBoundsKill = true;
 
-            if (facing == 'idle') {
-                bullet.body.velocity.x = 600;
-            }
-        }
-    },*/
+		// Set the bullet position to the gun position.
+		if (facing == 'right') {
+		 	bullet.reset(player.x, player.y);
+		} 
 
-	shootBall:function(){
+		else {
+			bullet.reset(player.x, player.y);
+		}
+
+		bullet.events.onOutOfBounds.add(resetBullet, this);
+		bullet.body.allowGravity = false;
+
+		// Shoot it
+		//bullet.body.velocity.x = this.BULLET_SPEED;
+		bullet.body.velocity.y = 0;
+
+		if (facing == 'right') {
+	    	bullet.body.velocity.x = 400;
+	    }
+
+	    else {
+	    	bullet.body.velocity.x = -400;
+	    }
+    },
+
+	/*shootBall:function(){
 
 		if (shootTime < this.time.now) {
-		    shootTime = this.time.now + 900;
-		    var bullet = purple_ball.getFirstExists(false);
+		    shootTime = this.time.now + 300;
+		    var bullet = purple_ball.getFirstExists();
+
+		    if (bullet === null || bullet === undefined) return;
+
+			bullet.revive();
 
 		    if (facing == 'right') {
-		      bullet = purple_ball.create(player.x, player.y, 'purple_ball');
+		     	bullet.reset(player.x, player.y);
 		    } 
 
 		    else {
-		      bullet = purple_ball.create(player.x, player.y, 'purple_ball');
+		    	bullet.reset(player.x, player.y);
+		      //bullet = purple_ball.create(player.x, player.y, 'purple_ball');
 		    }
 
 		    this.physics.enable(bullet, Phaser.Physics.ARCADE);
@@ -335,8 +382,8 @@ Game.Level1.prototype = {
 		    //bullet.outOfBoundsKill = true;
             bullet.events.onOutOfBounds.add(resetBullet, this);
 		    bullet.anchor.setTo(0.5, 0.3);
-		    purple_ball.setAll('scale.x', 1.2);
-        	purple_ball.setAll('scale.y', 1.2);
+		    purple_ball.setAll('scale.x', 1);
+        	purple_ball.setAll('scale.y', 1);
 		    bullet.body.velocity.y = 0;
 		    bullet.body.allowGravity = false;
 
@@ -350,10 +397,10 @@ Game.Level1.prototype = {
 
 		    /*if (facing == 'idle') {
                 bullet.body.velocity.x = 600;
-		    }*/
+		    }
 		}
 
-	},
+	},*/
 }
 
 function collectCoin (player, coins) {
