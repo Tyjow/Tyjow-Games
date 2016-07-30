@@ -10,9 +10,11 @@ EnemyMob = function(game,x,y) {
 	mob.body.allowGravity = false;
 	mob.animations.add('monster',[0,1,2,3],10,true);
 	mob.animations.play('monster');
-    mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10, enemyHP});
-
+    mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10});
+    //mob.healthBar.setPercent(100);
 	//this.myHealthBar.setPercent(100);
+	mob.enemyHP = 3;
+	mob.healthValue = 100;
 
 	mob.mobTween = game.add.tween(mob).to({
 		// 25 veut dire 25 pixel (maintenant à 100)
@@ -34,7 +36,8 @@ Game.Level1 = function(game) {};
 
 var enemyGroup;
 var enemy;
-var enemyHP = 1;
+var enemyHP;
+var healthValue;
 
 var map;
 var layer;
@@ -112,7 +115,7 @@ Game.Level1.prototype = {
         //player.animations.add('idle', [0], 1, true);
         player.animations.add('left', [8, 7, 6, 5, 4, 3, 2, 1, 0], 10, true);
         player.animations.add('right', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
-        //player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28], 10, true);
+        player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27], 10, true);
         this.physics.arcade.enable(player);
         this.camera.follow(player);
         player.body.collideWorldBounds = true;
@@ -192,7 +195,7 @@ Game.Level1.prototype = {
         this.game = game;
 
         boom = game.add.group();
-        boom.createMultiple(25, 'explosion');
+        boom.createMultiple(32, 'explosion');
         boom.forEach(setupGame, this);
 	},
 
@@ -240,7 +243,6 @@ Game.Level1.prototype = {
     	if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
 	        player.body.velocity.y = -500;
 	        jumpTimer = this.time.now + 650;
-	        //player.animations.play('jump');
 	    }
 
         if(controls.shoot.isDown) {
@@ -332,7 +334,7 @@ Game.Level1.prototype = {
 
 		    //bullet.outOfBoundsKill = true;
             bullet.events.onOutOfBounds.add(resetBullet, this);
-		    bullet.anchor.setTo(0.5, 0.5);
+		    bullet.anchor.setTo(0.5, 0.3);
 		    purple_ball.setAll('scale.x', 1.2);
         	purple_ball.setAll('scale.y', 1.2);
 		    bullet.body.velocity.y = 0;
@@ -369,14 +371,24 @@ function resetBullet (bullet) {
 
 function collisionHandler (bullet, flymob) {
 
-    bullet.kill();
-    flymob.healthBar.kill();
-    flymob.kill();
-    enemyHP --;
+	if (flymob.enemyHP -= 1) {
+		flymob.healthValue = flymob.healthValue - 33;
+		flymob.healthBar.setPercent(flymob.healthValue);
+	}
+	
+	bullet.kill();
 
-    var explosion = boom.getFirstExists(false);
-    explosion.reset(flymob.body.x + 30, flymob.body.y + 20);
-    explosion.play('explosion', 25, false, true);
+	if (flymob.enemyHP <= 0) {
+		
+	    flymob.healthBar.kill();
+	    flymob.kill();
+	    addCoin(this.game,flymob.x,flymob.y);
+
+	    var explosion = boom.getFirstExists(false);
+	    explosion.reset(flymob.body.x + 30, flymob.body.y + 20);
+	    explosion.play('explosion', 32, false, true);
+	}
+    
 }
 
 function setupGame (baddies) {
