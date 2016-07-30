@@ -32,6 +32,15 @@ addCoin = function(game,x,y){
     coin.animations.play('spin');
 }
 
+addCoinSilver = function(game,x,y){
+
+    var coinSilver = coinsSilvers.create(x,y,'coinSilver');
+    coinSilver.anchor.setTo(0.5,0.5);
+    coinSilver.body.allowGravity = false;
+    coinSilver.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 10, true);
+    coinSilver.animations.play('spin');
+}
+
 Game.Level1 = function(game) {};
 
 var enemyGroup;
@@ -51,15 +60,20 @@ var layer8;
 
 var bg;
 var score = 0;
+var scoreSilver = 0;
 var getCoin;
+var getCoinSilver;
 var coins;
+var coinsSilvers;
 var someCoin;
+var someCoinSilver;
 var player;
 var controls = {};
 var playerSpeed = 150;
 var jumpTimer = 0;
 var facing;
 var imgCoin;
+var imgCoinSilver;
 var bush1;
 
 var shootTime = 0;
@@ -132,10 +146,11 @@ Game.Level1.prototype = {
             shoot: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
 
-        imgCoin = this.add.sprite(30,30, 'coin');
-
+        imgCoin = this.add.sprite(140,1, 'coin');
+        imgCoin.scale.x = 0.8;
+        imgCoin.scale.y = 0.8;
         imgCoin.fixedToCamera = true;
-        imgCoin.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 10, true);
+        imgCoin.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
         imgCoin.animations.play('spin');
 
         coins = game.add.group();
@@ -157,6 +172,20 @@ Game.Level1.prototype = {
         addCoin(game,1880,270);
         addCoin(game,1670,100);
         addCoin(game,1720,100);
+
+
+
+        imgCoinSilver = this.add.sprite(270,1, 'coinSilver');
+        imgCoinSilver.scale.x = 0.8;
+        imgCoinSilver.scale.y = 0.8;
+        imgCoinSilver.fixedToCamera = true;
+        imgCoinSilver.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
+        imgCoinSilver.animations.play('spin');
+
+        coinsSilvers = game.add.group();
+        coinsSilvers.enableBody = true;
+
+        someCoinSilver = new addCoinSilver(game,30,90);
         
         enemyGroup = game.add.group();
         enemyGroup.enableBody = true;
@@ -170,13 +199,20 @@ Game.Level1.prototype = {
 
 
 
-        getCoin = game.add.text(75, 35, "x 0", { font: "25px Arial", fill: "#000" });
+        getCoin = game.add.text(175,1, "x 0", { font: "25px Arial", fill: "#000" });
         getCoin.fontWeight = 'bold';
         getCoin.stroke = "#d6d6c2";
         getCoin.strokeThickness = 8;
         //getCoin.setShadow(2, 2, "#66ee99", 2, false, true);
 
         (getCoin).fixedToCamera = true;
+
+
+        getCoinSilver = game.add.text(305, 1, "x 0", { font: "25px Arial", fill: "#000" });
+        getCoinSilver.fontWeight = 'bold';
+        getCoinSilver.stroke = "#d6d6c2";
+        getCoinSilver.strokeThickness = 8;
+		(getCoinSilver).fixedToCamera = true;
 
 	    // Define constants
 	    this.SHOT_DELAY = 300; // milliseconds (10 bullets/second)
@@ -269,6 +305,7 @@ Game.Level1.prototype = {
         }
 
         this.physics.arcade.overlap(player, coins, collectCoin, null, this);
+        this.physics.arcade.overlap(player, coinsSilvers, collectCoinSilver, null, this);
         //this.physics.arcade.overlap(purple_ball, enemyGroup, enemyDies, null, this);
 
         /*if (enemyHP <= 0 && gameState) {
@@ -300,8 +337,15 @@ Game.Level1.prototype = {
 		  	coins.children[i].revive();
         }
 
+        for (var i = 0; i < coinsSilvers.children.length; i++){
+            coinsSilvers.children[i].revive();
+        }
+
         score = 0;
         getCoin.text = "x " + score;
+
+        scoreSilver = 0;
+        getCoinSilver.text = "x " + scoreSilver;
 
 
 	},
@@ -410,6 +454,13 @@ function collectCoin (player, coins) {
     getCoin.text = "x " + score;
 }
 
+function collectCoinSilver (player, coinsSilvers) {
+
+    scoreSilver ++;
+    getCoinSilver.text = "x " + scoreSilver;
+    coinsSilvers.kill();
+}
+
 function resetBullet (bullet) {
 
     bullet.kill();
@@ -445,27 +496,6 @@ function setupGame (baddies) {
     baddies.animations.add('explosion');
 
 }
-
-/*function hitEnemy(enemy,purple_ball) {
-  purple_ball.kill();
-  enemyHP --;
-}*/
-
-/*function updateEnemyHP(game) {
-    enemyText.kill();
-    //enemyText = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10, enemyHP});
-}*/
-
-/*gameState = true;
-function enemyDies (game){
-  	enemyGroup.kill();
-  	boom = game.add.sprite(mob.body.x, mob.body.y, 'explosion');
-	game.physics.enable(boom, Phaser.Physics.ARCADE);
-	boom.animations.add('death', null, 25);
-	boom.animations.play('death');
-	boom.body.allowGravity = false;
-  	setTimeout(function() {game.world.remove(boom);},1000);
-}*/
 
 function setTileCollision(mapLayer, idxOrArray, dirs) {
  
