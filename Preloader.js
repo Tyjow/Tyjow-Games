@@ -30,7 +30,9 @@ Game.Preloader.prototype = {
 
         this.load.spritesheet('coinSilver', 'assets/coinSilver.png',40,40);
 
-        this.load.spritesheet('mob', 'assets/mob.png',64,64);
+        this.load.spritesheet('mob', 'assets/mob.png',48,48);
+
+        this.load.spritesheet('mob2', 'assets/mob2.png',48,48);
 
         this.load.image('titlescreen', 'assets/titlescreen.png');
 

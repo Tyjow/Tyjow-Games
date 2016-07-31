@@ -6,9 +6,11 @@ EnemyMob = function(game,x,y) {
 	game.physics.enable(mob, Phaser.Physics.ARCADE);
 	mob.body.immovable = true;
 	mob.body.collideWorldBounds = true;
-	mob.body.setSize(50, 50, 0, 0);
+	mob.body.setSize(48, 48, 0, 0);
+	mob.scale.x = 0.9;
+    mob.scale.y = 0.9;
 	mob.body.allowGravity = false;
-	mob.animations.add('monster',[0,1,2,3],10,true);
+	mob.animations.add('monster',[2,3],10,true);
 	mob.animations.play('monster');
     mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10});
     //mob.healthBar.setPercent(100);
@@ -21,6 +23,27 @@ EnemyMob = function(game,x,y) {
 		y: mob.y + 100
 
 	}, 2000,'Linear',true,0,100,true);
+}
+
+EnemyMob2 = function(game,x,y) {
+
+	var mob2 = enemyGroup2.create(x,y, 'mob2');
+	mob2.anchor.setTo(0.5,0.5);
+	mob2.name = 'mobland';
+	game.physics.enable(mob2, Phaser.Physics.ARCADE);
+	mob2.body.immovable = true;
+	mob2.body.collideWorldBounds = true;
+	mob2.body.setSize(48, 48, 0, 0);
+	mob2.scale.x = 0.7;
+    mob2.scale.y = 0.7;
+	mob2.body.allowGravity = false;
+	mob2.animations.add('monster',[2,3],5,true);
+	mob2.animations.play('monster');
+    mob2.healthBar = new HealthBar(game, {x: mob2.body.x + 30, y: mob2.body.y - 10});
+    //mob.healthBar.setPercent(100);
+	//this.myHealthBar.setPercent(100);
+	mob2.enemyHP = 2;
+	mob2.healthValue = 100;
 }
 
 addCoin = function(game,x,y){
@@ -44,7 +67,9 @@ addCoinSilver = function(game,x,y){
 Game.Level1 = function(game) {};
 
 var enemyGroup;
+var enemyGroup2;
 var enemy;
+var enemy2;
 var enemyHP;
 var healthValue;
 
@@ -198,6 +223,14 @@ Game.Level1.prototype = {
         EnemyMob(game,1380,240);
 
 
+        enemyGroup2 = game.add.group();
+        enemyGroup2.enableBody = true;
+        enemyGroup2.physicsBodyType = Phaser.Physics.ARCADE;
+
+        enemy2 = new EnemyMob2(game,1050,560);
+        EnemyMob2(game,1550,560);
+        EnemyMob2(game,1850,496);
+        EnemyMob2(game,2250,560);
 
         getCoin = game.add.text(175,1, "x 0", { font: "25px Arial", fill: "#000" });
         getCoin.fontWeight = 'bold';
@@ -258,7 +291,9 @@ Game.Level1.prototype = {
 
         this.physics.arcade.collide(player,layer);
         this.physics.arcade.collide(player,enemyGroup,this.resetPlayer);
+        this.physics.arcade.collide(player,enemyGroup2,this.resetPlayer);
         this.physics.arcade.overlap(purple_ball, enemyGroup, collisionHandler, null, this);
+        this.physics.arcade.overlap(purple_ball, enemyGroup2, collisionHandler2, null, this);
 
         player.body.velocity.x = 0;
 
@@ -316,7 +351,11 @@ Game.Level1.prototype = {
         //updateEnemyHP(this.game);
 
         enemyGroup.forEach(function(mob){
-        mob.healthBar.setPosition(mob.body.x + 30, mob.body.y - 10);
+        mob.healthBar.setPosition(mob.body.x + 20, mob.body.y - 10);
+        }, this);
+
+        enemyGroup2.forEach(function(mob2){
+        mob2.healthBar.setPosition(mob2.body.x + 20, mob2.body.y - 10);
         }, this);
 
 	},
@@ -327,6 +366,10 @@ Game.Level1.prototype = {
 
 		for (var i = 0; i < enemyGroup.children.length; i++){
 		  	enemyGroup.children[i].revive();
+        }
+
+        for (var i = 0; i < enemyGroup2.children.length; i++){
+		  	enemyGroup2.children[i].revive();
         }
 
         //enemyHP = 1;
@@ -472,6 +515,13 @@ function collisionHandler (bullet, flymob) {
 	if (flymob.enemyHP -= 1) {
 		flymob.healthValue = flymob.healthValue - 33;
 		flymob.healthBar.setPercent(flymob.healthValue);
+		flymob.animations.add('monster',[0,1],7,true);
+		flymob.animations.play('monster');
+		flymob.mobTween = this.game.add.tween(flymob).to({
+		// 25 veut dire 25 pixel (maintenant à 100)
+		y: flymob.y + 75
+
+		}, 2500,'Linear',true,0,100,true);
 	}
 	
 	bullet.kill();
@@ -484,6 +534,30 @@ function collisionHandler (bullet, flymob) {
 
 	    var explosion = boom.getFirstExists(false);
 	    explosion.reset(flymob.body.x + 30, flymob.body.y + 20);
+	    explosion.play('explosion', 32, false, true);
+	}
+    
+}
+
+function collisionHandler2 (bullet, mobland) {
+
+	if (mobland.enemyHP -= 1) {
+		mobland.healthValue = mobland.healthValue - 50;
+		mobland.healthBar.setPercent(mobland.healthValue);
+		mobland.animations.add('monster',[0,1],5,true);
+		mobland.animations.play('monster');
+	}
+	
+	bullet.kill();
+
+	if (mobland.enemyHP <= 0) {
+		
+	    mobland.healthBar.kill();
+	    mobland.kill();
+	    //addCoin(this.game,mobland.x,mobland.y);
+
+	    var explosion = boom.getFirstExists(false);
+	    explosion.reset(mobland.body.x + 30, mobland.body.y + 20);
 	    explosion.play('explosion', 32, false, true);
 	}
     
