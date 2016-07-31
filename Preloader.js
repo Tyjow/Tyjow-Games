@@ -26,6 +26,10 @@ Game.Preloader.prototype = {
 
         this.load.spritesheet('buttons', 'assets/buttons.png',193,71);
 
+        this.load.spritesheet('pause', 'assets/pause.png',64,64);
+
+        this.load.spritesheet('menu-pause', 'assets/menu-pause.png',450,450);
+
         this.load.spritesheet('coin', 'assets/coin.png',40,40);
 
         this.load.spritesheet('coinSilver', 'assets/coinSilver.png',40,40);
