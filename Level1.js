@@ -37,11 +37,20 @@ EnemyMob2 = function(game,x,y) {
 	mob2.scale.x = 0.7;
     mob2.scale.y = 0.7;
 	mob2.body.allowGravity = false;
-	mob2.animations.add('monster',[2,3],5,true);
-	mob2.animations.play('monster');
+	/*mob2.animations.add('monster2Right',[4,5],5,true);
+	mob2.animations.add('monster2Left',[2,3],5,true);
+	mob2.animations.play('monster2Left');
+	mob2.animations.play('monster2Right');*/
+	mob2.animations.add('monster2',[2,3],5,true);
+	mob2.animations.play('monster2');
     mob2.healthBar = new HealthBar(game, {x: mob2.body.x + 30, y: mob2.body.y - 10});
-    //mob.healthBar.setPercent(100);
-	//this.myHealthBar.setPercent(100);
+
+    mob2.mobTween = game.add.tween(mob2).to({
+
+		x: mob2.x + 75
+
+	}, 2000,'Linear',true,0,100,true);
+
 	mob2.enemyHP = 2;
 	mob2.healthValue = 100;
 }
@@ -356,7 +365,24 @@ Game.Level1.prototype = {
 
         enemyGroup2.forEach(function(mob2){
         mob2.healthBar.setPosition(mob2.body.x + 20, mob2.body.y - 10);
+	        /*var pathCounter = 0;
+
+	        for (var i=0; i < 20; i++) {
+	        	
+	        	if (pathCounter <= 0)  {
+	        		pathCounter++;
+					mob2.animations.play('monster2Left');
+					mob2.body.velocity.x = -30;
+				}
+				else if (pathCounter >= 5) {
+					pathCounter--;
+				    mob2.animations.play('monster2Right');
+				    mob2.body.velocity.x = 30;
+				}
+	        }*/
         }, this);
+
+        
 
 	},
 
@@ -544,8 +570,14 @@ function collisionHandler2 (bullet, mobland) {
 	if (mobland.enemyHP -= 1) {
 		mobland.healthValue = mobland.healthValue - 50;
 		mobland.healthBar.setPercent(mobland.healthValue);
-		mobland.animations.add('monster',[0,1],5,true);
-		mobland.animations.play('monster');
+		mobland.animations.add('monster2',[0,1],5,true);
+		mobland.animations.play('monster2');
+		//mobland.body.velocity.x = 0;
+		mobland.mobTween = this.game.add.tween(mobland).to({
+    	
+		x: mobland.x + 30
+
+		}, 2000,'Linear',true,0,100,true);
 	}
 	
 	bullet.kill();
