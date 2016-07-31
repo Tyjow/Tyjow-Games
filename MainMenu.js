@@ -3,22 +3,28 @@ Game.MainMenu = function(game){
 };
 
 var titlescreen;
+var bg;
 
 Game.MainMenu.prototype = {
 	create:function(game){
 
-		this.createButton(game,'Play',game.world.centerX,game.world.centerY + 32, 300, 100, 
+		this.createButton(game,'Jouez',game.world.centerX,game.world.centerY + 32, 300, 100, 
 		function(){
 			this.state.start('Level1');
 		});
 
-		this.createButton(game,'About',game.world.centerX,game.world.centerY + 192, 300, 100, 
+		this.createButton(game,'A Propos',game.world.centerX,game.world.centerY + 192, 300, 100, 
 		function(){
 			console.log('About');
 		});
 
-		titlescreen = game.add.sprite(game.world.centerX,game.world.centerY - 192, 'titlescreen');
+		titlescreen = game.add.sprite(game.world.centerX,game.world.centerY - 150, 'titlescreen');
 		titlescreen.anchor.setTo(0.5,0.5);
+
+		//bg = this.add.tileSprite(0, 0, 1500, 600, "bg-nuit");
+		//bg = game.add.sprite(0, 0, 'bg-moon');
+
+		this.stage.backgroundColor = '#000';
 
 	},
 
@@ -34,7 +40,7 @@ Game.MainMenu.prototype = {
 		button1.width = w;
 		button1.height = h;
 
-		var txt = game.add.text(button1.x,button1.y, string, {font: '14px Arial', fill: '#fff', align: 'center'});
+		var txt = game.add.text(button1.x,button1.y, string, {font: '20px Comic Sans MS', fill: '#fff', align: 'center'});
 
 		txt.anchor.setTo(0.5,0.5);
 

@@ -40,6 +40,8 @@ Game.Preloader.prototype = {
 
         this.load.image('bg-nuit', 'assets/Nuit.png');
 
+        this.load.image('bg-moon', 'assets/Moon.png');
+
         this.load.image('bg', 'assets/BG.png');
 
         this.load.spritesheet('explosion', 'assets/explosion.png',67,67);
