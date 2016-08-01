@@ -450,11 +450,15 @@ Game.Level1.prototype = {
 
 		for (var i = 0; i < enemyGroup.children.length; i++){
 		  	enemyGroup.children[i].revive();
+		  	enemyGroup.children[i].animations.add('monster',[2,3],10,true);
+			enemyGroup.children[i].animations.play('monster');
         }
 
         for (var i = 0; i < enemyGroup2.children.length; i++){
 		  	enemyGroup2.children[i].revive();
         }
+
+
 
         //enemyHP = 1;
         //gameState = true;
