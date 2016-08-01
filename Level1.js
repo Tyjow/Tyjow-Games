@@ -515,7 +515,7 @@ Game.Level1.prototype = {
 
 		bullet.events.onOutOfBounds.add(resetBullet, this);
 		bullet.body.allowGravity = false;
-		bullet.lifespan=1800;
+		bullet.lifespan=1000;
 
 		// Shoot it
 		//bullet.body.velocity.x = this.BULLET_SPEED;
