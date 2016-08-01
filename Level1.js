@@ -357,8 +357,8 @@ Game.Level1.prototype = {
 	update:function(){
 
         this.physics.arcade.collide(player,layer);
-        this.physics.arcade.collide(player,enemyGroup,this.resetPlayer);
-        this.physics.arcade.collide(player,enemyGroup2,this.resetPlayer);
+        this.physics.arcade.collide(player,enemyGroup,this.restartLevel, null, this);
+        this.physics.arcade.collide(player,enemyGroup2,this.restartLevel, null, this);
         this.physics.arcade.overlap(purple_ball, enemyGroup, collisionHandler, null, this);
         this.physics.arcade.overlap(purple_ball, enemyGroup2, collisionHandler2, null, this);
 
@@ -444,15 +444,18 @@ Game.Level1.prototype = {
 
 	},
 
-	resetPlayer:function(){
+	resetPlayer:function(player){
 		player.reset(100,560);
 		//enemy1.mob.revive();
 
 		for (var i = 0; i < enemyGroup.children.length; i++){
 		  	enemyGroup.children[i].revive();
-		  	enemyGroup.children[i].animations.add('monster',[2,3],10,true);
-			enemyGroup.children[i].animations.play('monster');
+		  	/*enemyGroup.children[i].animations.add('monster',[2,3],10,true);
+			enemyGroup.children[i].animations.play('monster');*/
         }
+
+        /*var group1 = enemyGroup.getFirstDead();
+        group1.revive();*/
 
         for (var i = 0; i < enemyGroup2.children.length; i++){
 		  	enemyGroup2.children[i].revive();
@@ -478,6 +481,20 @@ Game.Level1.prototype = {
         scoreSilver = 0;
         getCoinSilver.text = "x " + scoreSilver;
 
+
+	},
+
+	restartLevel: function(){
+
+		score = 0;
+        //getCoin.text = "x " + score;
+
+        scoreSilver = 0;
+        //getCoinSilver.text = "x " + scoreSilver;
+
+		//this.game.state.start(this.game.state.current);
+
+		this.game.state.restart();
 
 	},
 
@@ -603,6 +620,8 @@ function resetBullet (bullet) {
 
 function collisionHandler (bullet, flymob) {
 
+	bullet.kill();
+
 	if (flymob.enemyHP -= 1) {
 		flymob.healthValue = flymob.healthValue - 33;
 		flymob.healthBar.setPercent(flymob.healthValue);
@@ -614,8 +633,6 @@ function collisionHandler (bullet, flymob) {
 
 		}, 2000,'Linear',true,0,100,true);
 	}
-	
-	bullet.kill();
 
 	if (flymob.enemyHP <= 0) {
 		
@@ -632,6 +649,8 @@ function collisionHandler (bullet, flymob) {
 
 function collisionHandler2 (bullet, mobland) {
 
+	bullet.kill();
+
 	if (mobland.enemyHP -= 1) {
 		mobland.healthValue = mobland.healthValue - 50;
 		mobland.healthBar.setPercent(mobland.healthValue);
@@ -644,8 +663,6 @@ function collisionHandler2 (bullet, mobland) {
 
 		}, 2000,'Linear',true,0,100,true);
 	}
-	
-	bullet.kill();
 
 	if (mobland.enemyHP <= 0) {
 		
