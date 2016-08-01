@@ -307,11 +307,11 @@ Game.Level1.prototype = {
 	        game.paused = true;
 
 	        // Then add the menu
-	        menu = game.add.sprite(400, 300, 'menu-pause');
+	        menu = game.add.sprite(game.camera.x+400, game.camera.y+275, 'menu-pause');
 	        menu.anchor.setTo(0.5, 0.5);
 
 	        // And a label to illustrate which menu item was chosen. (This is not necessary)
-	        choiseLabel = game.add.text(400, 560, 'Cliquez pour continuer', { font: '30px Arial', fill: '#fff' });
+	        choiseLabel = game.add.text(game.camera.x+400, game.camera.y+560, 'Cliquez pour continuer', { font: '30px Arial', fill: '#fff' });
 	        choiseLabel.anchor.setTo(0.5, 0.5);
 	    });
 
@@ -329,14 +329,14 @@ Game.Level1.prototype = {
 		        // Check if the click was inside the menu
 		        if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
 		            // The choicemap is an array that will help us see which item was clicked
-		            var choisemap = ['one', 'two', 'three', 'four', 'five', 'six'];
+		            //var choisemap = ['one', 'two', 'three', 'four', 'five', 'six'];
 
 		            // Get menu local coordinates for the click
 		            var x = event.x - x1,
 		                y = event.y - y1;
 
 		            // Calculate the choice 
-		            var choise = Math.floor(x / 90) + 3*Math.floor(y / 90);
+		            //var choise = Math.floor(x / 90) + 3*Math.floor(y / 90);
 
 		            // Display the choice
 		            //choiseLabel.text = 'You chose menu item: ' + choisemap[choise];
