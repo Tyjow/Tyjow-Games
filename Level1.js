@@ -554,6 +554,7 @@ Game.Level1.prototype = {
 
 	    else {
 	    	bullet.body.velocity.x = -400;
+	    	bullet.scale.x *= -1;
 	    }
     },
 
