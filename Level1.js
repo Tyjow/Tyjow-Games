@@ -243,6 +243,8 @@ Game.Level1.prototype = {
         EnemyMob2(game,1550,560);
         EnemyMob2(game,1850,496);
         EnemyMob2(game,2250,560);
+        EnemyMob2(game,2160,240);
+        EnemyMob2(game,445,112);
 
         getCoin = game.add.text(175,1, "x 0", { font: "25px Arial", fill: "#000" });
         getCoin.fontWeight = 'bold';
@@ -299,9 +301,11 @@ Game.Level1.prototype = {
         boom.forEach(setupGame, this);
 
         // Create a label to use as a button
-	    pause_label = game.add.sprite(735,5, 'pause');
+	    pause_label = game.add.sprite(750,5, 'pause');
 	    pause_label.fixedToCamera = true;
 	    pause_label.inputEnabled = true;
+	    pause_label.scale.x = 0.7;
+        pause_label.scale.y = 0.7;
 	    pause_label.events.onInputUp.add(function () {
 	        // When the paus button is pressed, we pause the game
 	        game.paused = true;
@@ -309,9 +313,11 @@ Game.Level1.prototype = {
 	        // Then add the menu
 	        menu = game.add.sprite(game.camera.x+400, game.camera.y+275, 'menu-pause');
 	        menu.anchor.setTo(0.5, 0.5);
+	        menu.scale.x = 0.8;
+        	menu.scale.y = 0.8;
 
 	        // And a label to illustrate which menu item was chosen. (This is not necessary)
-	        choiseLabel = game.add.text(game.camera.x+400, game.camera.y+560, 'Cliquez pour continuer', { font: '30px Arial', fill: '#fff' });
+	        choiseLabel = game.add.text(game.camera.x+400, game.camera.y+520, 'Cliquez pour continuer', { font: '25px Arial', fill: '#fff' });
 	        choiseLabel.anchor.setTo(0.5, 0.5);
 	    });
 
