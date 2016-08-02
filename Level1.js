@@ -55,6 +55,15 @@ EnemyMob2 = function(game,x,y) {
 	mob2.healthValue = 100;
 }
 
+addTempoJump = function(game,x,y){
+
+    var bJump = bJumpS.create(x,y,'bJump');
+    bJump.anchor.setTo(0.5,0.5);
+    bJump.body.allowGravity = false;
+    bJump.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 10, true);
+    bJump.animations.play('spin');
+}
+
 addCoin = function(game,x,y){
 
     var coin = coins.create(x,y,'coin');
@@ -92,6 +101,8 @@ var layer6;
 var layer7;
 var layer8;
 
+var bJumpS;
+var somebJump;
 var bg;
 var score = 0;
 var scoreSilver = 0;
@@ -189,6 +200,11 @@ Game.Level1.prototype = {
         imgCoin.fixedToCamera = true;
         imgCoin.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
         imgCoin.animations.play('spin');
+
+        bJumpS = game.add.group();
+        bJumpS.enableBody = true;
+
+        somebJump = new addTempoJump(game,200,560);
 
         coins = game.add.group();
         coins.enableBody = true;
@@ -414,6 +430,7 @@ Game.Level1.prototype = {
 
         this.physics.arcade.overlap(player, coins, collectCoin, null, this);
         this.physics.arcade.overlap(player, coinsSilvers, collectCoinSilver, null, this);
+        this.physics.arcade.overlap(player, bJumpS, collectbJump, null, this);
         //this.physics.arcade.overlap(purple_ball, enemyGroup, enemyDies, null, this);
 
         /*if (enemyHP <= 0 && gameState) {
@@ -446,7 +463,16 @@ Game.Level1.prototype = {
 	        }*/
         }, this);
 
-        
+        if (this.physics.arcade.overlap(player, bJumpS, collectbJump, null, this)) {
+        	if (controls.up.isDown){
+		    	player.body.velocity.y = -800;
+			}
+		    this.time.events.add(Phaser.Timer.SECOND * 2, function(){
+		    	if (controls.up.isDown){
+		    		player.body.velocity.y = -500;
+			    }
+		    });
+        }
 
 	},
 
@@ -550,11 +576,12 @@ Game.Level1.prototype = {
 
 		if (facing == 'right') {
 	    	bullet.body.velocity.x = 400;
+	    	bullet.scale.x = 1;
 	    }
 
 	    else {
 	    	bullet.body.velocity.x = -400;
-	    	bullet.scale.x *= -1;
+	    	bullet.scale.x = -1;
 	    }
     },
 
@@ -603,6 +630,19 @@ Game.Level1.prototype = {
 	},*/
 }
 
+function collectbJump (player, bJumpS) {
+
+    bJumpS.kill();
+    //player.body.velocity.y = player.body.velocity.y -800;
+    /*if (controls.up.isDown){
+    	player.body.velocity.y = -800;
+	}*/
+    /*this.time.events.add(Phaser.Timer.SECOND * 2, function(){
+    	if (controls.up.isDown){
+    		player.body.velocity.y = -500;
+	    }
+    });*/
+}
 
 
 function collectCoin (player, coins) {
