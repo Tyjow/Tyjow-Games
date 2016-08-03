@@ -103,6 +103,7 @@ var layer8;
 
 var bJumpS;
 var somebJump;
+var imgbJump;
 var bg;
 var score = 0;
 var scoreSilver = 0;
@@ -127,6 +128,9 @@ var boom;
 var menu;
 var choiseLabel;
 var w = 800, h = 600;
+var bodyVelocity = -500;
+var bodyGravity = 0;
+
 
 Game.Level1.prototype = {
 	create:function(game){
@@ -204,7 +208,7 @@ Game.Level1.prototype = {
         bJumpS = game.add.group();
         bJumpS.enableBody = true;
 
-        somebJump = new addTempoJump(game,200,560);
+        somebJump = new addTempoJump(game,480,100);
 
         coins = game.add.group();
         coins.enableBody = true;
@@ -420,7 +424,8 @@ Game.Level1.prototype = {
     	}
 
     	if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
-	        player.body.velocity.y = -500;
+	        player.body.velocity.y = bodyVelocity;
+	        player.body.gravity.y = bodyGravity;
 	        jumpTimer = this.time.now + 650;
 	    }
 
@@ -463,7 +468,7 @@ Game.Level1.prototype = {
 	        }*/
         }, this);
 
-        if (this.physics.arcade.overlap(player, bJumpS, collectbJump, null, this)) {
+        /*if (this.physics.arcade.overlap(player, bJumpS, collectbJump, null, this)) {
         	if (controls.up.isDown){
 		    	player.body.velocity.y = -800;
 			}
@@ -472,7 +477,7 @@ Game.Level1.prototype = {
 		    		player.body.velocity.y = -500;
 			    }
 		    });
-        }
+        }*/
 
 	},
 
@@ -633,15 +638,17 @@ Game.Level1.prototype = {
 function collectbJump (player, bJumpS) {
 
     bJumpS.kill();
-    //player.body.velocity.y = player.body.velocity.y -800;
-    /*if (controls.up.isDown){
-    	player.body.velocity.y = -800;
-	}*/
-    /*this.time.events.add(Phaser.Timer.SECOND * 2, function(){
-    	if (controls.up.isDown){
-    		player.body.velocity.y = -500;
-	    }
-    });*/
+    bodyGravity = -500;
+    bodyVelocity = -400;
+    /*imgbJump = this.add.sprite(player.x,player.y, 'bJump');
+    imgbJump.fixedToCamera = true;
+    imgbJump.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
+    imgbJump.animations.play('spin');*/
+
+    this.time.events.add(Phaser.Timer.SECOND * 2, function(){
+    	bodyGravity = 0;
+    	bodyVelocity = -500;
+    });
 }
 
 
