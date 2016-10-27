@@ -1,9 +1,0 @@
-body {
-	display: flex;
-	justify-content: center;
-	background-color: #000;
-}
-
-canvas {
-	margin-top: 75px;
-}
