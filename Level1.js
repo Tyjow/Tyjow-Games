@@ -640,8 +640,8 @@ function collectbJump (player, bJumpS) {
     bJumpS.kill();
     bodyGravity = -500;
     bodyVelocity = -400;
-    /*imgbJump = this.add.sprite(player.x,player.y, 'bJump');
-    imgbJump.fixedToCamera = true;
+    /*imgbJump = this.add.sprite(player.body.x,player.body.y, 'bJump');
+    //imgbJump.fixedToCamera = true;
     imgbJump.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
     imgbJump.animations.play('spin');*/
 
