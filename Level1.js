@@ -1,3 +1,5 @@
+
+// create a fly mob
 EnemyMob = function(game,x,y) {
 
 	var mob = enemyGroup.create(x,y, 'mob');
@@ -13,18 +15,17 @@ EnemyMob = function(game,x,y) {
 	mob.animations.add('monster',[2,3],10,true);
 	mob.animations.play('monster');
     mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10});
-    //mob.healthBar.setPercent(100);
-	//this.myHealthBar.setPercent(100);
 	mob.enemyHP = 3;
 	mob.healthValue = 100;
 
 	mob.mobTween = game.add.tween(mob).to({
-		// 25 veut dire 25 pixel (maintenant à 100)
+		// 100 veut dire 100 pixel
 		y: mob.y + 100
 
 	}, 2000,'Linear',true,0,100,true);
 }
 
+// create a land mob
 EnemyMob2 = function(game,x,y) {
 
 	var mob2 = enemyGroup2.create(x,y, 'mob2');
@@ -37,10 +38,6 @@ EnemyMob2 = function(game,x,y) {
 	mob2.scale.x = 0.7;
     mob2.scale.y = 0.7;
 	mob2.body.allowGravity = false;
-	/*mob2.animations.add('monster2Right',[4,5],5,true);
-	mob2.animations.add('monster2Left',[2,3],5,true);
-	mob2.animations.play('monster2Left');
-	mob2.animations.play('monster2Right');*/
 	mob2.animations.add('monster2',[2,3],5,true);
 	mob2.animations.play('monster2');
     mob2.healthBar = new HealthBar(game, {x: mob2.body.x + 30, y: mob2.body.y - 10});
@@ -55,6 +52,7 @@ EnemyMob2 = function(game,x,y) {
 	mob2.healthValue = 100;
 }
 
+// jewel bonus speed
 addTempoJump = function(game,x,y){
 
     var bJump = bJumpS.create(x,y,'bJump');
@@ -64,6 +62,7 @@ addTempoJump = function(game,x,y){
     bJump.animations.play('spin');
 }
 
+// add coin..
 addCoin = function(game,x,y){
 
     var coin = coins.create(x,y,'coin');
@@ -72,7 +71,6 @@ addCoin = function(game,x,y){
     coin.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 10, true);
     coin.animations.play('spin');
 }
-
 addCoinSilver = function(game,x,y){
 
     var coinSilver = coinsSilvers.create(x,y,'coinSilver');
@@ -84,13 +82,18 @@ addCoinSilver = function(game,x,y){
 
 Game.Level1 = function(game) {};
 
+// variable group for fly mob
 var enemyGroup;
+
+// variable group for land mob
 var enemyGroup2;
+
 var enemy;
 var enemy2;
 var enemyHP;
 var healthValue;
 
+// variable map level1
 var map;
 var layer;
 var layer2;
@@ -100,6 +103,7 @@ var layer5;
 var layer6;
 var layer7;
 var layer8;
+
 
 var bJumpS;
 var somebJump;
@@ -135,16 +139,10 @@ var bodyGravity = 0;
 Game.Level1.prototype = {
 	create:function(game){
 
-		//bg = this.add.tileSprite(0, 0, 1500, 600, "bg-nuit");
 		bg = this.add.tileSprite(0, 0, 2700, 750, "bg");
 
-		/*var backgroundScaleWidth = 1500 / bg.texture.frame.width;
-		var backgroundScaleHeight = backgroundScaleWidth/16 * 9;*/
-
-		//bg.scale.setTo(1, 1.1);
-
 		this.stage.backgroundColor = '#16cad0';
-        
+
         this.physics.arcade.gravity.y = 1400;
         
         map = this.add.tilemap('map');
@@ -163,7 +161,6 @@ Game.Level1.prototype = {
         layer.resizeWorld();
       
         map.setCollisionBetween(0,10);
-        //map.setTileIndexCallback(22, this.resetPlayer,this);
 
 	    setTileCollision(layer, [0,1,2,3,4,5,6,7,8,9,10], {
 	        top: true,
@@ -176,9 +173,6 @@ Game.Level1.prototype = {
         player.anchor.setTo(0.5,0.5);
         player.frame = 9;
         
-        //player.animations.add('left', [0, 1, 2, 3], 10, true);
-        //player.animations.add('right', [5, 6, 7, 8], 10, true);
-        //player.animations.add('idle', [0], 1, true);
         player.animations.add('left', [8, 7, 6, 5, 4, 3, 2, 1, 0], 10, true);
         player.animations.add('right', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
         player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27], 10, true);
@@ -186,11 +180,12 @@ Game.Level1.prototype = {
         this.camera.follow(player);
         player.body.collideWorldBounds = true;
 	    player.body.checkCollision.up = false;
-	    //player.body.checkCollision.left = false;
-	    //player.body.checkCollision.right = false;
         player.body.bounce.y = 0.2;
         player.body.setSize(20, 32, 5, 16);
 
+
+        // set controls
+        
         controls = {
             right: this.input.keyboard.addKey(Phaser.Keyboard.D),
             left: this.input.keyboard.addKey(Phaser.Keyboard.Q),
@@ -231,7 +226,6 @@ Game.Level1.prototype = {
         addCoin(game,1720,100);
 
 
-
         imgCoinSilver = this.add.sprite(270,1, 'coinSilver');
         imgCoinSilver.scale.x = 0.8;
         imgCoinSilver.scale.y = 0.8;
@@ -247,8 +241,6 @@ Game.Level1.prototype = {
         enemyGroup = game.add.group();
         enemyGroup.enableBody = true;
         enemyGroup.physicsBodyType = Phaser.Physics.ARCADE;
-
-        //enemyText = new HealthBar(game, {x: enemyGroup.x, y: enemyGroup, enemyHP});
 
         enemy = new EnemyMob(game,550,340);
         EnemyMob(game,850,240);
@@ -270,8 +262,6 @@ Game.Level1.prototype = {
         getCoin.fontWeight = 'bold';
         getCoin.stroke = "#d6d6c2";
         getCoin.strokeThickness = 8;
-        //getCoin.setShadow(2, 2, "#66ee99", 2, false, true);
-
         (getCoin).fixedToCamera = true;
 
 
@@ -281,9 +271,10 @@ Game.Level1.prototype = {
         getCoinSilver.strokeThickness = 8;
 		(getCoinSilver).fixedToCamera = true;
 
-	    // Define constants
-	    this.SHOT_DELAY = 300; // milliseconds (10 bullets/second)
-	    //this.BULLET_SPEED = 500; // pixels/second
+
+	    this.SHOT_DELAY = 300; // 300 milliseconds (10 bullets/second)
+
+	    // you can set the speed (pixels/second) : this.BULLET_SPEED = 500; 
 	    this.NUMBER_OF_BULLETS = 10;
 
         purple_ball = game.add.group();
@@ -291,6 +282,7 @@ Game.Level1.prototype = {
         purple_ball.setAll('scale.y', 0.3);
 
 	    for(var i = 0; i < this.NUMBER_OF_BULLETS; i++) {
+
 	        // Create each bullet and add it to the group.
 	        var bullet = game.add.sprite(0, 0, 'purple_ball');
 	        purple_ball.add(bullet);
@@ -304,16 +296,8 @@ Game.Level1.prototype = {
 	        // Set its initial state to "dead".
 	        bullet.kill();
 	    }
-        /*purple_ball = game.add.group();
-        purple_ball.enableBody = true;
-        purple_ball.physicsBodyType = Phaser.Physics.ARCADE;
-        purple_ball.setAll('outOfBoundsKill', true);
-    	purple_ball.setAll('checkWorldBounds', true);
 
-        purple_ball.createMultiple(3, 'purple_ball');*/
-
-
-
+        // this.game = (param) to the function create
         this.game = game;
 
         boom = game.add.group();
@@ -345,6 +329,7 @@ Game.Level1.prototype = {
     	game.input.onDown.add(unpause, self);
 
     	function unpause (event){
+
 		    // Only act if paused
 		    if(game.paused){
 
@@ -354,18 +339,11 @@ Game.Level1.prototype = {
 
 		        // Check if the click was inside the menu
 		        if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
-		            // The choicemap is an array that will help us see which item was clicked
-		            //var choisemap = ['one', 'two', 'three', 'four', 'five', 'six'];
 
 		            // Get menu local coordinates for the click
 		            var x = event.x - x1,
 		                y = event.y - y1;
 
-		            // Calculate the choice 
-		            //var choise = Math.floor(x / 90) + 3*Math.floor(y / 90);
-
-		            // Display the choice
-		            //choiseLabel.text = 'You chose menu item: ' + choisemap[choise];
 		        }
 		        else {
 			        // Remove the menu and the label
@@ -419,7 +397,6 @@ Game.Level1.prototype = {
 	            else if (facing == 'right'){
 	                player.frame = 9;
 	            }
-	            //facing = 'idle';
 	        }
     	}
 
@@ -436,14 +413,6 @@ Game.Level1.prototype = {
         this.physics.arcade.overlap(player, coins, collectCoin, null, this);
         this.physics.arcade.overlap(player, coinsSilvers, collectCoinSilver, null, this);
         this.physics.arcade.overlap(player, bJumpS, collectbJump, null, this);
-        //this.physics.arcade.overlap(purple_ball, enemyGroup, enemyDies, null, this);
-
-        /*if (enemyHP <= 0 && gameState) {
-		    enemyDies(this.game);
-		    gameState = false;
-		}*/
-
-        //updateEnemyHP(this.game);
 
         enemyGroup.forEach(function(mob){
         mob.healthBar.setPosition(mob.body.x + 20, mob.body.y - 10);
@@ -451,33 +420,7 @@ Game.Level1.prototype = {
 
         enemyGroup2.forEach(function(mob2){
         mob2.healthBar.setPosition(mob2.body.x + 20, mob2.body.y - 10);
-	        /*var pathCounter = 0;
-
-	        for (var i=0; i < 20; i++) {
-	        	
-	        	if (pathCounter <= 0)  {
-	        		pathCounter++;
-					mob2.animations.play('monster2Left');
-					mob2.body.velocity.x = -30;
-				}
-				else if (pathCounter >= 5) {
-					pathCounter--;
-				    mob2.animations.play('monster2Right');
-				    mob2.body.velocity.x = 30;
-				}
-	        }*/
         }, this);
-
-        /*if (this.physics.arcade.overlap(player, bJumpS, collectbJump, null, this)) {
-        	if (controls.up.isDown){
-		    	player.body.velocity.y = -800;
-			}
-		    this.time.events.add(Phaser.Timer.SECOND * 2, function(){
-		    	if (controls.up.isDown){
-		    		player.body.velocity.y = -500;
-			    }
-		    });
-        }*/
 
 	},
 
@@ -487,24 +430,13 @@ Game.Level1.prototype = {
 
 		for (var i = 0; i < enemyGroup.children.length; i++){
 		  	enemyGroup.children[i].revive();
-		  	/*enemyGroup.children[i].animations.add('monster',[2,3],10,true);
-			enemyGroup.children[i].animations.play('monster');*/
         }
-
-        /*var group1 = enemyGroup.getFirstDead();
-        group1.revive();*/
 
         for (var i = 0; i < enemyGroup2.children.length; i++){
 		  	enemyGroup2.children[i].revive();
         }
 
-
-
-        //enemyHP = 1;
-        //gameState = true;
-		
         for (var i = 0; i < coins.children.length; i++){
-        	//for (var i in coins.children)
 		  	coins.children[i].revive();
         }
 
@@ -522,17 +454,9 @@ Game.Level1.prototype = {
 	},
 
 	restartLevel: function(){
-
 		score = 0;
-        //getCoin.text = "x " + score;
-
         scoreSilver = 0;
-        //getCoinSilver.text = "x " + scoreSilver;
-
-		//this.game.state.start(this.game.state.current);
-
 		this.game.state.restart();
-
 	},
 
     shootBall:function(){
@@ -541,6 +465,7 @@ Game.Level1.prototype = {
 		// the time that each bullet is shot and testing if
 		// the amount of time since the last shot is more than
 		// the required delay.
+
 		if (this.lastBulletShotAt === undefined) this.lastBulletShotAt = 0;
 		if (this.time.now - this.lastBulletShotAt < this.SHOT_DELAY) return;
 		this.lastBulletShotAt = this.time.now;
@@ -559,6 +484,7 @@ Game.Level1.prototype = {
 		// Phaser takes care of this for me by setting this flag
 		// but you can do it yourself by killing the bullet if
 		// its x,y coordinates are outside of the world.
+
 		bullet.checkWorldBounds = true;
 		bullet.outOfBoundsKill = true;
 
@@ -566,7 +492,6 @@ Game.Level1.prototype = {
 		if (facing == 'right') {
 		 	bullet.reset(player.x, player.y);
 		} 
-
 		else {
 			bullet.reset(player.x, player.y);
 		}
@@ -576,7 +501,7 @@ Game.Level1.prototype = {
 		bullet.lifespan=1000;
 
 		// Shoot it
-		//bullet.body.velocity.x = this.BULLET_SPEED;
+
 		bullet.body.velocity.y = 0;
 
 		if (facing == 'right') {
@@ -589,50 +514,6 @@ Game.Level1.prototype = {
 	    	bullet.scale.x = -1;
 	    }
     },
-
-	/*shootBall:function(){
-
-		if (shootTime < this.time.now) {
-		    shootTime = this.time.now + 300;
-		    var bullet = purple_ball.getFirstExists();
-
-		    if (bullet === null || bullet === undefined) return;
-
-			bullet.revive();
-
-		    if (facing == 'right') {
-		     	bullet.reset(player.x, player.y);
-		    } 
-
-		    else {
-		    	bullet.reset(player.x, player.y);
-		      //bullet = purple_ball.create(player.x, player.y, 'purple_ball');
-		    }
-
-		    this.physics.enable(bullet, Phaser.Physics.ARCADE);
-
-		    //bullet.outOfBoundsKill = true;
-            bullet.events.onOutOfBounds.add(resetBullet, this);
-		    bullet.anchor.setTo(0.5, 0.3);
-		    purple_ball.setAll('scale.x', 1);
-        	purple_ball.setAll('scale.y', 1);
-		    bullet.body.velocity.y = 0;
-		    bullet.body.allowGravity = false;
-
-		    if (facing == 'right') {
-		      bullet.body.velocity.x = 600;
-		    }
-
-		    else {
-		      bullet.body.velocity.x = -600;
-		    }
-
-		    /*if (facing == 'idle') {
-                bullet.body.velocity.x = 600;
-		    }
-		}
-
-	},*/
 }
 
 function collectbJump (player, bJumpS) {
@@ -640,10 +521,6 @@ function collectbJump (player, bJumpS) {
     bJumpS.kill();
     bodyGravity = -500;
     bodyVelocity = -400;
-    /*imgbJump = this.add.sprite(player.body.x,player.body.y, 'bJump');
-    //imgbJump.fixedToCamera = true;
-    imgbJump.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
-    imgbJump.animations.play('spin');*/
 
     this.time.events.add(Phaser.Timer.SECOND * 2, function(){
     	bodyGravity = 0;
@@ -682,7 +559,6 @@ function collisionHandler (bullet, flymob) {
 		flymob.animations.add('monster',[0,1],7,true);
 		flymob.animations.play('monster');
 		flymob.mobTween = this.game.add.tween(flymob).to({
-		// 25 veut dire 25 pixel (maintenant à 100)
 		y: flymob.y + 55
 
 		}, 2000,'Linear',true,0,100,true);
@@ -710,7 +586,6 @@ function collisionHandler2 (bullet, mobland) {
 		mobland.healthBar.setPercent(mobland.healthValue);
 		mobland.animations.add('monster2',[0,1],5,true);
 		mobland.animations.play('monster2');
-		//mobland.body.velocity.x = 0;
 		mobland.mobTween = this.game.add.tween(mobland).to({
     	
 		x: mobland.x + 30
@@ -722,7 +597,6 @@ function collisionHandler2 (bullet, mobland) {
 		
 	    mobland.healthBar.kill();
 	    mobland.kill();
-	    //addCoin(this.game,mobland.x,mobland.y);
 
 	    var explosion = boom.getFirstExists(false);
 	    explosion.reset(mobland.body.x + 30, mobland.body.y + 20);
