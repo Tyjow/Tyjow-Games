@@ -11,11 +11,11 @@ EnemyMob = function(game,x,y) {
   mob.body.collideWorldBounds = true;
   mob.body.setSize(48, 48, 0, 0);
   mob.scale.x = 0.9;
-    mob.scale.y = 0.9;
+  mob.scale.y = 0.9;
   mob.body.allowGravity = false;
   mob.animations.add('monster',[2,3],10,true);
   mob.animations.play('monster');
-    mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10});
+  mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10});
   mob.enemyHP = 3;
   mob.healthValue = 100;
 
@@ -37,13 +37,13 @@ EnemyMob2 = function(game,x,y) {
   mob2.body.collideWorldBounds = true;
   mob2.body.setSize(48, 48, 0, 0);
   mob2.scale.x = 0.7;
-    mob2.scale.y = 0.7;
+  mob2.scale.y = 0.7;
   mob2.body.allowGravity = false;
   mob2.animations.add('monster2',[2,3],5,true);
   mob2.animations.play('monster2');
-    mob2.healthBar = new HealthBar(game, {x: mob2.body.x + 30, y: mob2.body.y - 10});
+  mob2.healthBar = new HealthBar(game, {x: mob2.body.x + 30, y: mob2.body.y - 10});
 
-    mob2.mobTween = game.add.tween(mob2).to({
+  mob2.mobTween = game.add.tween(mob2).to({
 
     x: mob2.x + 75
 
@@ -336,7 +336,9 @@ Game.prototype = {
 
         this.SHOT_DELAY = 300; // 300 milliseconds (10 bullets/second)
 
-        // you can set the speed (pixels/second) : this.BULLET_SPEED = 500; 
+        // this.BULLET_SPEED = 500;
+
+        // you can set the speed (pixels/second);
         this.NUMBER_OF_BULLETS = 10;
 
 
@@ -493,7 +495,7 @@ Game.prototype = {
     player.reset(100,560);
     //enemy1.mob.revive();
 
-    for (var i = 0; i < enemyGroup.children.length; i++){
+        for (var i = 0; i < enemyGroup.children.length; i++){
         enemyGroup.children[i].revive();
         }
 
@@ -520,7 +522,7 @@ Game.prototype = {
 
   restartLevel: function(){
     score = 0;
-        scoreSilver = 0;
+    scoreSilver = 0;
     this.game.state.restart();
   },
 
