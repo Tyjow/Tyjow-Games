@@ -10,16 +10,16 @@ GameOver.prototype = {
     var optionStyle = { font: '30pt TheMinion', fill: 'white', align: 'left', stroke: 'rgba(0,0,0,0)', srokeThickness: 4};
     var txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 300, text, optionStyle);
     txt.anchor.setTo(0.5);
-    txt.stroke = "rgba(0,0,0,0";
+    txt.stroke = "rgb(1,1,1)";
     txt.strokeThickness = 4;
     var onOver = function (target) {
-      target.fill = "#FEFFD5";
-      target.stroke = "rgba(200,200,200,0.5)";
+      target.fill = "#000";
+      target.stroke = "rgb(255,255,255)";
       txt.useHandCursor = true;
     };
     var onOut = function (target) {
-      target.fill = "white";
-      target.stroke = "rgba(0,0,0,0)";
+      target.fill = "#fff";
+      target.stroke = "rgb(1,1,1)";
       txt.useHandCursor = false;
     };
     //txt.useHandCursor = true;

@@ -6,18 +6,18 @@ GameMenu.prototype = {
   },
 
   addMenuOption: function(text, callback) {
-    var optionStyle = { font: '30pt TheMinion', fill: '#000', align: 'left', stroke: 'rgba(0,0,0,0)', srokeThickness: 4};
+    var optionStyle = { font: '30pt TheMinion', fill: '#fff', align: 'left', stroke: 'rgba(0,0,0,0)', srokeThickness: 4};
     var txt = game.add.text(30, (this.optionCount * 80) + 200, text, optionStyle);
-    txt.stroke = "rgba(0,0,0,0";
+    txt.stroke = "rgb(1,1,1)";
     txt.strokeThickness = 4;
     var onOver = function (target) {
-      target.fill = "#660033";
-      target.stroke = "rgba(200,200,200,0.5)";
+      target.fill = "#000";
+      target.stroke = "rgb(255,255,255)";
       txt.useHandCursor = true;
     };
     var onOut = function (target) {
-      target.fill = "#000";
-      target.stroke = "rgba(0,0,0,0)";
+      target.fill = "#fff";
+      target.stroke = "rgb(1,1,1)";
       txt.useHandCursor = false;
     };
     //txt.useHandCursor = true;
@@ -42,7 +42,7 @@ GameMenu.prototype = {
     this.stage.disableVisibilityChange = true;
     game.add.sprite(0, 0, 'menu-bg');
     var titleStyle = { font: 'bold 60pt TheMinion', fill: '#ccccb3', align: 'center'};
-    var text = game.add.text(game.world.centerX, 100, "Tyjow RPG", titleStyle);
+    var text = game.add.text(game.world.centerX, 100, "Heroes Side", titleStyle);
     text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
     text.anchor.set(0.5);
     this.addMenuOption('Commencer', function (e) {
