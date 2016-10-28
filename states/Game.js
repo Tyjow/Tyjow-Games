@@ -135,7 +135,22 @@ var bodyGravity = 0;
 
 Game.prototype = {
 
+  init: function () {
+    this.loadingBar = game.make.sprite(game.world.centerX-(387/2), 400, "loading");
+    this.logo       = game.make.sprite(game.world.centerX, 200, 'brand');
+    this.status     = game.make.text(game.world.centerX, 380, 'Chargement...', {fill: 'white'});
+    utils.centerGameObjects([this.logo, this.status]);
+  },
+
   preload: function () {
+
+        game.add.sprite(0, 0, 'nuit');
+        game.add.existing(this.logo).scale.setTo(0.8);
+        game.add.existing(this.loadingBar);
+        game.add.existing(this.status);
+        this.load.setPreloadSprite(this.loadingBar);
+
+
     
         this.load.tilemap('map', 'assets/map/map01.json',null, Phaser.Tilemap.TILED_JSON);
 
