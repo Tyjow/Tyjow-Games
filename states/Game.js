@@ -11,11 +11,11 @@ EnemyMob = function(game,x,y) {
   mob.body.collideWorldBounds = true;
   mob.body.setSize(48, 48, 0, 0);
   mob.scale.x = 0.9;
-    mob.scale.y = 0.9;
+  mob.scale.y = 0.9;
   mob.body.allowGravity = false;
   mob.animations.add('monster',[2,3],10,true);
   mob.animations.play('monster');
-    mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10});
+  mob.healthBar = new HealthBar(game, {x: mob.body.x + 30, y: mob.body.y - 10});
   mob.enemyHP = 3;
   mob.healthValue = 100;
 
@@ -37,13 +37,13 @@ EnemyMob2 = function(game,x,y) {
   mob2.body.collideWorldBounds = true;
   mob2.body.setSize(48, 48, 0, 0);
   mob2.scale.x = 0.7;
-    mob2.scale.y = 0.7;
+  mob2.scale.y = 0.7;
   mob2.body.allowGravity = false;
   mob2.animations.add('monster2',[2,3],5,true);
   mob2.animations.play('monster2');
-    mob2.healthBar = new HealthBar(game, {x: mob2.body.x + 30, y: mob2.body.y - 10});
+  mob2.healthBar = new HealthBar(game, {x: mob2.body.x + 30, y: mob2.body.y - 10});
 
-    mob2.mobTween = game.add.tween(mob2).to({
+  mob2.mobTween = game.add.tween(mob2).to({
 
     x: mob2.x + 75
 
@@ -202,12 +202,15 @@ Game.prototype = {
       
         map.setCollisionBetween(0,10);
 
-      setTileCollision(layer, [0,1,2,3,4,5,6,7,8,9,10], {
-          top: true,
-          bottom: false,
-          left: false,
-          right: false
-      });
+        setTileCollision(layer, [0,1,2,3,4,5,6,7,8,9,10], {
+            top: true,
+            bottom: false,
+            left: false,
+            right: false
+        });
+
+
+        // Initialize and create player
 
         player = this.add.sprite(100,560,'player');
         player.anchor.setTo(0.5,0.5);
@@ -219,7 +222,7 @@ Game.prototype = {
         this.physics.arcade.enable(player);
         this.camera.follow(player);
         player.body.collideWorldBounds = true;
-      player.body.checkCollision.up = false;
+        player.body.checkCollision.up = false;
         player.body.bounce.y = 0.2;
         player.body.setSize(20, 32, 5, 16);
 
@@ -233,6 +236,8 @@ Game.prototype = {
             shoot: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
 
+        // Initialize img coins
+
         imgCoin = this.add.sprite(140,1, 'coin');
         imgCoin.scale.x = 0.8;
         imgCoin.scale.y = 0.8;
@@ -240,13 +245,47 @@ Game.prototype = {
         imgCoin.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
         imgCoin.animations.play('spin');
 
+        imgCoinSilver = this.add.sprite(270,1, 'coinSilver');
+        imgCoinSilver.scale.x = 0.8;
+        imgCoinSilver.scale.y = 0.8;
+        imgCoinSilver.fixedToCamera = true;
+        imgCoinSilver.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
+        imgCoinSilver.animations.play('spin');
+
+
+        // Create coins Icon
+
+        getCoin = game.add.text(175,1, "x 0", { font: "25px Arial", fill: "#000" });
+        getCoin.fontWeight = 'bold';
+        getCoin.stroke = "#d6d6c2";
+        getCoin.strokeThickness = 8;
+        (getCoin).fixedToCamera = true;
+
+
+        getCoinSilver = game.add.text(305, 1, "x 0", { font: "25px Arial", fill: "#000" });
+        getCoinSilver.fontWeight = 'bold';
+        getCoinSilver.stroke = "#d6d6c2";
+        getCoinSilver.strokeThickness = 8;
+        (getCoinSilver).fixedToCamera = true;
+
+        // Jewel bonus jump
+
         bJumpS = game.add.group();
         bJumpS.enableBody = true;
 
         somebJump = new addTempoJump(game,480,100);
 
+
+        // Initialize coins group
+
         coins = game.add.group();
         coins.enableBody = true;
+
+        coinsSilvers = game.add.group();
+        coinsSilvers.enableBody = true;
+
+
+        // Create coins (addCoin : is copper coins, addCoinSilver : is silver coins)
 
         someCoin = new addCoin(game,250,420);
         addCoin(game,300,420);
@@ -266,30 +305,25 @@ Game.prototype = {
         addCoin(game,1720,100);
 
 
-        imgCoinSilver = this.add.sprite(270,1, 'coinSilver');
-        imgCoinSilver.scale.x = 0.8;
-        imgCoinSilver.scale.y = 0.8;
-        imgCoinSilver.fixedToCamera = true;
-        imgCoinSilver.animations.add('spin',[0, 1, 2, 3, 4, 5, 6, 7], 6, true);
-        imgCoinSilver.animations.play('spin');
-
-        coinsSilvers = game.add.group();
-        coinsSilvers.enableBody = true;
-
         someCoinSilver = new addCoinSilver(game,30,90);
-        
+
+
+        // Initialize enemies group
+
         enemyGroup = game.add.group();
         enemyGroup.enableBody = true;
         enemyGroup.physicsBodyType = Phaser.Physics.ARCADE;
 
-        enemy = new EnemyMob(game,550,340);
-        EnemyMob(game,850,240);
-        EnemyMob(game,1380,240);
-
-
         enemyGroup2 = game.add.group();
         enemyGroup2.enableBody = true;
         enemyGroup2.physicsBodyType = Phaser.Physics.ARCADE;
+
+
+        // Create ennemies (EnemyMob : is fly mob, EnemyMob2 : is land mob)
+
+        enemy = new EnemyMob(game,550,340);
+        EnemyMob(game,850,240);
+        EnemyMob(game,1380,240);
 
         enemy2 = new EnemyMob2(game,1050,560);
         EnemyMob2(game,1550,560);
@@ -298,24 +332,17 @@ Game.prototype = {
         EnemyMob2(game,2160,240);
         EnemyMob2(game,445,112);
 
-        getCoin = game.add.text(175,1, "x 0", { font: "25px Arial", fill: "#000" });
-        getCoin.fontWeight = 'bold';
-        getCoin.stroke = "#d6d6c2";
-        getCoin.strokeThickness = 8;
-        (getCoin).fixedToCamera = true;
 
 
-        getCoinSilver = game.add.text(305, 1, "x 0", { font: "25px Arial", fill: "#000" });
-        getCoinSilver.fontWeight = 'bold';
-        getCoinSilver.stroke = "#d6d6c2";
-        getCoinSilver.strokeThickness = 8;
-    (getCoinSilver).fixedToCamera = true;
+        this.SHOT_DELAY = 300; // 300 milliseconds (10 bullets/second)
+
+        // this.BULLET_SPEED = 500;
+
+        // you can set the speed (pixels/second);
+        this.NUMBER_OF_BULLETS = 10;
 
 
-      this.SHOT_DELAY = 300; // 300 milliseconds (10 bullets/second)
-
-      // you can set the speed (pixels/second) : this.BULLET_SPEED = 500; 
-      this.NUMBER_OF_BULLETS = 10;
+        // Initialize bullets group
 
         purple_ball = game.add.group();
         purple_ball.setAll('scale.x', 0.3);
@@ -468,7 +495,7 @@ Game.prototype = {
     player.reset(100,560);
     //enemy1.mob.revive();
 
-    for (var i = 0; i < enemyGroup.children.length; i++){
+        for (var i = 0; i < enemyGroup.children.length; i++){
         enemyGroup.children[i].revive();
         }
 
@@ -495,7 +522,7 @@ Game.prototype = {
 
   restartLevel: function(){
     score = 0;
-        scoreSilver = 0;
+    scoreSilver = 0;
     this.game.state.restart();
   },
 
