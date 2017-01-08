@@ -227,9 +227,9 @@ Game.prototype = {
         // set controls
         
         controls = {
-            right: this.input.keyboard.addKey(Phaser.Keyboard.D),
-            left: this.input.keyboard.addKey(Phaser.Keyboard.Q),
-            up: this.input.keyboard.addKey(Phaser.Keyboard.Z),
+            right: this.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+            left: this.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+            up: this.input.keyboard.addKey(Phaser.Keyboard.UP),
             shoot: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
 
