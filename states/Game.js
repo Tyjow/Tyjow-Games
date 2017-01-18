@@ -215,10 +215,9 @@ Game.prototype = {
         player = this.add.sprite(100,560,'player');
         player.anchor.setTo(0.5,0.5);
         player.frame = 9;
-        
-        player.animations.add('left', [8, 7, 6, 5, 4, 3, 2, 1, 0], 10, true);
-        player.animations.add('right', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
+
         player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27], 10, true);
+        player.animations.add('walk', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
         this.physics.arcade.enable(player);
         this.camera.follow(player);
         player.body.collideWorldBounds = true;
@@ -433,45 +432,61 @@ Game.prototype = {
         this.physics.arcade.overlap(purple_ball, enemyGroup, collisionHandler, null, this);
         this.physics.arcade.overlap(purple_ball, enemyGroup2, collisionHandler2, null, this);
 
-        player.body.velocity.x = 0;
+		player.body.velocity.x = 0;
 
-        if(controls.left.isDown){
-            player.scale.setTo(1,1);
-            player.body.velocity.x -= playerSpeed;
+		if(controls.left.isDown){
+		    player.body.velocity.x -= playerSpeed;
 
-            if(facing !== 'left'){
-              player.animations.play('left');
-              facing = 'left';
-            }
-        }
-        
-        else if(controls.right.isDown){
-            player.scale.setTo(1,1);
-            player.body.velocity.x += playerSpeed;
-            if(facing !== 'right'){
-              player.animations.play('right');
-              facing = 'right';
-            }
-        }
+		    if(facing !== 'left'){
 
-        else{
+		    player.scale.x=-1;
+		      player.play('walk');
+		      facing = 'left';
+		    }
+		}
 
-          if (facing !== 'idle'){
-              player.animations.play("idle");
-              if (facing == 'left'){
-                  player.frame = 8;
-              }
-              else if (facing == 'right'){
-                  player.frame = 9;
-              }
-          }
-      }
+		else if(controls.right.isDown){
+		    player.body.velocity.x += playerSpeed;
+		    
+		    if(facing !== 'right'){
+		    player.scale.x=1;
+		      player.play('walk');
+		      facing = 'right';
+		    }
+		}
 
-      if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
-          player.body.velocity.y = bodyVelocity;
-          player.body.gravity.y = bodyGravity;
-          jumpTimer = this.time.now + 650;
-      }
+		else{
+
+		  if (facing !== 'idle'){
+		      if (facing == 'left'){
+		          player.frame = 9;
+		      }
+		      else if (facing == 'right'){
+		          player.frame = 9;
+		      }
+		  }
+		}
+
+		if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
+			player.play("walk");
+		}
+
+		if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
+		  player.body.velocity.y = bodyVelocity;
+		  player.body.gravity.y = bodyGravity;
+		  jumpTimer = this.time.now + 650;
+		  /*if (facing == 'idle'){*/
+		      player.animations.play("jump");
+		      /*if (facing == 'left'){
+		          player.frame = 9;
+		      }
+		      else if (facing == 'right'){
+		          player.frame = 9;
+		      }
+		  }*/
+		}
+
+
 
         if(controls.shoot.isDown) {
           this.shootBall();
@@ -559,7 +574,7 @@ Game.prototype = {
     if (facing == 'right') {
       bullet.reset(player.x, player.y);
     } 
-    else {
+    else if (facing == 'left') {
       bullet.reset(player.x, player.y);
     }
 
@@ -576,7 +591,7 @@ Game.prototype = {
         bullet.scale.x = 1;
       }
 
-      else {
+      else if (facing == 'left') {
         bullet.body.velocity.x = -400;
         bullet.scale.x = -1;
       }
