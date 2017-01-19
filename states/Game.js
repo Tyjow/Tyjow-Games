@@ -217,6 +217,7 @@ Game.prototype = {
         player.frame = 9;
 
         player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27], 10, true);
+        player.animations.add('runshoot', [28, 29, 30, 31, 32, 33, 34, 35, 36], 10, true);
         player.animations.add('walk', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
         this.physics.arcade.enable(player);
         this.camera.follow(player);
@@ -355,6 +356,7 @@ Game.prototype = {
 
           // Set its pivot point to the center of the bullet
           bullet.anchor.setTo(0.5, 0.3);
+          /*bullet.anchor.setTo(-1, 0.45);*/
 
           // Enable physics on the bullet
           this.physics.enable(bullet, Phaser.Physics.ARCADE);
@@ -443,12 +445,33 @@ Game.prototype = {
 		      player.play('walk');
 		      facing = 'left';
 		    }
+		    if(controls.shoot.isDown){
+
+		    player.scale.x=-1;
+		      player.play('runshoot');
+		      facing = 'left';
+		    }
+		    else if (player.body.onFloor()){
+		    player.scale.x=-1;
+		      player.play('walk');
+		      facing = 'left';
+		    }
 		}
 
 		else if(controls.right.isDown){
 		    player.body.velocity.x += playerSpeed;
 		    
 		    if(facing !== 'right'){
+		    player.scale.x=1;
+		      player.play('walk');
+		      facing = 'right';
+		    }
+		    if(controls.shoot.isDown){
+		    player.scale.x=1;
+		      player.play('runshoot');
+		      facing = 'right';
+		    }
+		    else if (player.body.onFloor()) {
 		    player.scale.x=1;
 		      player.play('walk');
 		      facing = 'right';
@@ -477,6 +500,7 @@ Game.prototype = {
 		  jumpTimer = this.time.now + 650;
 		  /*if (facing == 'idle'){*/
 		      player.animations.play("jump");
+		      console.log(player.animations.play("jump"));
 		      /*if (facing == 'left'){
 		          player.frame = 9;
 		      }
@@ -595,6 +619,12 @@ Game.prototype = {
         bullet.body.velocity.x = -400;
         bullet.scale.x = -1;
       }
+	    if (player.animations.currentAnim.name == 'runshoot') {
+	    	bullet.anchor.setTo(-1, 0.45);
+	    }
+	    else if(player.animations.currentAnim.name !== 'runshoot'){
+	    	bullet.anchor.setTo(0.5, 0.3);
+	    }
     },
 }
 
