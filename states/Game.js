@@ -486,15 +486,11 @@ Game.prototype = {
 			}
 		}
 
-		/*if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
-			player.frame = 9;
-		}*/
-
 		if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
-		  player.body.velocity.y = bodyVelocity;
-		  player.body.gravity.y = bodyGravity;
-		  jumpTimer = this.time.now + 850;
-		      player.animations.play("jump");
+			player.body.velocity.y = bodyVelocity;
+			player.body.gravity.y = bodyGravity;
+			jumpTimer = this.time.now + 850;
+			player.animations.play("jump");
 		}
 
 
