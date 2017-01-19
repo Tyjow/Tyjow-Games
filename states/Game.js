@@ -436,69 +436,59 @@ Game.prototype = {
 
 		player.body.velocity.x = 0;
 
-		if(controls.left.isDown){
+		if(controls.left.isDown) {
 		    player.body.velocity.x -= playerSpeed;
 
-		    if(facing !== 'left'){
-
-		    player.scale.x=-1;
-		      player.play('walk');
-		      facing = 'left';
+		    if(facing !== 'left') {
+				player.scale.x=-1;
+				player.play('walk');
+				facing = 'left';
 		    }
-		    if(controls.shoot.isDown){
-
-		    player.scale.x=-1;
-		      player.play('runshoot');
-		      facing = 'left';
-		    }
-		    else if (player.body.onFloor()){
-		    player.scale.x=-1;
-		      player.play('walk');
-		      facing = 'left';
-		    }
-		    else if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
-				player.play("walk");
-			}
-		}
-
-		else if(controls.right.isDown){
-		    player.body.velocity.x += playerSpeed;
-		    
-		    if(facing !== 'right'){
-		    player.scale.x=1;
-		      player.play('walk');
-		      facing = 'right';
-		    }
-		    if(controls.shoot.isDown){
-		    player.scale.x=1;
-		      player.play('runshoot');
-		      facing = 'right';
+		    if(controls.shoot.isDown) {
+     			player.play('runshoot');
 		    }
 		    else if (player.body.onFloor()) {
-		    player.scale.x=1;
-		      player.play('walk');
-		      facing = 'right';
+				player.play('walk');		  
 		    }
-		    else if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
+		    else if(player.body.onFloor() && player.animations.currentAnim.name == 'jump') {
 				player.play("walk");
 			}
 		}
 
-		else{
-
-		  if (facing !== 'idle'){
-		      if (player.body.onFloor() && facing == 'left'){
-		          player.frame = 9;
-		      }
-		      else if (player.body.onFloor() && facing == 'right'){
-		          player.frame = 9;
-		      }
-		  }
+		else if(controls.right.isDown) {
+		    player.body.velocity.x += playerSpeed;
+		    
+		    if(facing !== 'right') {
+				player.scale.x=1;
+				player.play('walk');
+				facing = 'right';
+		    }
+		    if(controls.shoot.isDown) {
+				player.play('runshoot');		   
+		    }
+		    else if (player.body.onFloor()) {		  
+				player.play('walk');
+		    }
+		    else if(player.body.onFloor() && player.animations.currentAnim.name == 'jump') {
+				player.play("walk");
+			}
 		}
 
-		if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
+		else {
+
+			if (facing !== 'idle') {
+				if (player.body.onFloor() && facing == 'left') {
+					player.frame = 9;
+				}
+				else if (player.body.onFloor() && facing == 'right') {
+					player.frame = 9;
+				}
+			}
+		}
+
+		/*if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
 			player.frame = 9;
-		}
+		}*/
 
 		if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
 		  player.body.velocity.y = bodyVelocity;
