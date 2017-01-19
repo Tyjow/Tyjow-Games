@@ -219,6 +219,7 @@ Game.prototype = {
         player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27], 10, true);
         player.animations.add('runshoot', [28, 29, 30, 31, 32, 33, 34, 35, 36], 10, true);
         player.animations.add('landshoot', [37, 38, 39, 40], 8, true);
+        player.animations.add('jumpshoot', [41, 42, 43, 44, 45], 10, true);
         player.animations.add('walk', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
         this.physics.arcade.enable(player);
         this.camera.follow(player);
@@ -495,6 +496,9 @@ Game.prototype = {
 			player.body.gravity.y = bodyGravity;
 			jumpTimer = this.time.now + 850;
 			player.animations.play("jump");
+		}
+		else if (controls.up.isDown && controls.shoot.isDown) {
+			player.animations.play('jumpshoot');
 		}
 
 
