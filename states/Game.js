@@ -456,6 +456,9 @@ Game.prototype = {
 		      player.play('walk');
 		      facing = 'left';
 		    }
+		    else if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
+				player.play("walk");
+			}
 		}
 
 		else if(controls.right.isDown){
@@ -476,38 +479,32 @@ Game.prototype = {
 		      player.play('walk');
 		      facing = 'right';
 		    }
+		    else if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
+				player.play("walk");
+			}
 		}
 
 		else{
 
 		  if (facing !== 'idle'){
-		      if (facing == 'left'){
+		      if (player.body.onFloor() && facing == 'left'){
 		          player.frame = 9;
 		      }
-		      else if (facing == 'right'){
+		      else if (player.body.onFloor() && facing == 'right'){
 		          player.frame = 9;
 		      }
 		  }
 		}
 
 		if(player.body.onFloor() && player.animations.currentAnim.name == 'jump'){
-			player.play("walk");
+			player.frame = 9;
 		}
 
 		if (controls.up.isDown && player.body.onFloor() && this.time.now > jumpTimer){
 		  player.body.velocity.y = bodyVelocity;
 		  player.body.gravity.y = bodyGravity;
-		  jumpTimer = this.time.now + 650;
-		  /*if (facing == 'idle'){*/
+		  jumpTimer = this.time.now + 850;
 		      player.animations.play("jump");
-		      console.log(player.animations.play("jump"));
-		      /*if (facing == 'left'){
-		          player.frame = 9;
-		      }
-		      else if (facing == 'right'){
-		          player.frame = 9;
-		      }
-		  }*/
 		}
 
 
