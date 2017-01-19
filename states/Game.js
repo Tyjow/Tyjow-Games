@@ -446,7 +446,7 @@ Game.prototype = {
 				player.play('walk');
 				facing = 'left';
 		    }
-		    if(controls.shoot.isDown) {
+		    if(player.body.onFloor() && controls.shoot.isDown) {
      			player.play('runshoot');
 		    }
 		    else if (player.body.onFloor()) {
@@ -465,7 +465,7 @@ Game.prototype = {
 				player.play('walk');
 				facing = 'right';
 		    }
-		    if(controls.shoot.isDown) {
+		    if(player.body.onFloor() && controls.shoot.isDown) {
 				player.play('runshoot');		   
 		    }
 		    else if (player.body.onFloor()) {		  
@@ -498,8 +498,11 @@ Game.prototype = {
 			player.animations.play("jump");
 		}
 		else if (controls.up.isDown && controls.shoot.isDown) {
-			player.animations.play('jumpshoot');
+			player.play('jumpshoot');
 		}
+		else if(controls.shoot.isDown && bodyVelocity > 0) {
+			player.play('jumpshoot');		   
+	    }
 
 
 
