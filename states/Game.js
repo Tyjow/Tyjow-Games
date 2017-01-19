@@ -218,6 +218,7 @@ Game.prototype = {
 
         player.animations.add('jump', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27], 10, true);
         player.animations.add('runshoot', [28, 29, 30, 31, 32, 33, 34, 35, 36], 10, true);
+        player.animations.add('landshoot', [37, 38, 39, 40], 8, true);
         player.animations.add('walk', [9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
         this.physics.arcade.enable(player);
         this.camera.follow(player);
@@ -476,13 +477,16 @@ Game.prototype = {
 
 		else {
 
-			if (facing !== 'idle') {
-				if (player.body.onFloor() && facing == 'left') {
-					player.frame = 9;
-				}
-				else if (player.body.onFloor() && facing == 'right') {
-					player.frame = 9;
-				}
+
+			if (player.body.onFloor() && facing == 'left' && controls.shoot.isDown) {
+				player.play('landshoot');	
+			}
+			else if (player.body.onFloor() && facing == 'right' && controls.shoot.isDown) {
+				player.play('landshoot');
+				
+			}
+			else if (player.body.onFloor()) {
+				player.frame = 9;
 			}
 		}
 
@@ -605,8 +609,9 @@ Game.prototype = {
 	    if (player.animations.currentAnim.name == 'runshoot') {
 	    	bullet.anchor.setTo(-1, 0.45);
 	    }
-	    else if(player.animations.currentAnim.name !== 'runshoot'){
-	    	bullet.anchor.setTo(0.5, 0.3);
+	    else if(player.animations.currentAnim.name == 'landshoot'){
+	    	/*bullet.anchor.setTo(0.5, 0.3);*/
+	    	bullet.anchor.setTo(-0.8, 0.7);
 	    }
     },
 }
